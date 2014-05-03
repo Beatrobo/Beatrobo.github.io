@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: hipchat | Playground]]></title>
+  <link href="http://tech.beatrobo.com/blog/categories/hipchat/atom.xml" rel="self"/>
+  <link href="http://tech.beatrobo.com/"/>
+  <updated>2014-05-04T08:39:14+09:00</updated>
+  <id>http://tech.beatrobo.com/</id>
+  <author>
+    <name><![CDATA[Engineers of Beatrobo, Inc.]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[IRKitを使ってHipChatからエアコンを制御する]]></title>
+    <link href="http://tech.beatrobo.com/blog/2014/02/01/irkit-hipchat-onoff-air/"/>
+    <updated>2014-02-01T01:55:46+09:00</updated>
+    <id>http://tech.beatrobo.com/blog/2014/02/01/irkit-hipchat-onoff-air</id>
+    <content type="html"><![CDATA[<p>どうもはじめまして。Beatrobo竹井(<a href="https://twitter.com/HideyukiTakei">@HideyukiTakei</a>)です。</p>
+
+<p>これからBeatroboエンジニアたちの技術的な話をここにまとめていこうと思います。</p>
+
+<p>第一弾はIRKitに関して！</p>
+
+<p><img src="/images/201405/irkit.jpg" alt="IRKit" /></p>
+
+<p><a href="http://getirkit.com/">IRKit</a>とは、<a href="https://twitter.com/maaash">@maaash</a>さんが開発しているWiFi機能の付いたオープンソースな赤外線リモコンデバイスです。<a href="https://github.com/irkit/device">Arduinoのソースコードや基板の回路図も公開</a>されています。また、IRKitをローカルネットワークから制御するための<a href="http://getirkit.com/#IRKit-Device-API">Device HTTP API</a>や、インターネット越しに制御するための<a href="http://getirkit.com/#IRKit-Internet-API">Internet HTTP API</a>も用意されています。</p>
+
+<p>今回はこのIRKitを使って<a href="https://www.hipchat.com/%E2%80%8E">HipChat</a>からエアコンを制御する方法を順を追ってご紹介します！</p>
+
+<hr />
+
+<h3>1.リモコンON/OFF時の赤外線信号を取得する</h3>
+
+<p>Internet HTTP API の<a href="http://getirkit.com/#IRKit-Internet-GET-1-messages">GET /1/messages</a>を用いることでリモコンの赤外線信号をJSONで取得することができます。</p>
+
+<p>IRKitはBonjourに対応しているようですので、まずIRKitの名前を取得しましょう。</p>
+
+<p><code>
+$ dns-sd -B _irkit._tcp
+Browsing for _irkit._tcp
+DATE: ---Sat 01 Feb 2014---
+15:41:50.027  ...STARTING...
+Timestamp     A/R    Flags  if Domain               Service Type         Instance Name
+15:41:50.555  Add        2   5 local.               _irkit._tcp.         iRKitD1D1
+^C
+</code></p>
+
+<p>コマンド結果で表示されている <code>iRKitD1D1</code> (仮名)がIRKitの名前です。また、ドメインが <code>local</code> なので、<code>iRKitD1D1 .local</code> がIRKitの宛先となります。</p>
+
+<p>Internet HTTP API を使用するためには clientkey, deviceid が必要で、これらを取得するためには clienttoken が必要です。clienttoken は Device HTTP API の<a href="http://getirkit.com/#IRKit-Device-POST-keys">POST /1/keys</a>で取得できます。</p>
+
+<p><code>
+$ curl -i "http://iRKitD1D1.local/keys" -d ""
+{"clienttoken":"00112233445566778899AABBCCDDEEFF"}
+</code></p>
+
+<p>ここで得られた clienttoken を使って Internet HTTP API の <a href="http://getirkit.com/#IRKit-Internet-POST-1-keys">POST /keys</a> で clientkey, deviceid を取得します。</p>
+
+<p>```
+$curl -i &ldquo;<a href="http://api.getirkit.com/1/keys">http://api.getirkit.com/1/keys</a>&rdquo; -d &ldquo;clienttoken= 00112233445566778899AABBCCDDEEFF&rdquo;
+HTTP/1.1 200 OK
+Server: ngx_openresty
+Date: Tue, 07 Jan 2014 08:46:06 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 94
+Connection: keep-alive
+X-Content-Type-Options: nosniff</p>
+
+<p>{&ldquo;deviceid&rdquo;:&ldquo;0123456789ABCDEF0123456789ABCDEF&rdquo;,&ldquo;clientkey&rdquo;:&ldquo;FEDCBA9876543210FEDCBA9876543210&rdquo;}
+```</p>
+
+<p>これで Internet HTTP API を使う準備は完了です。</p>
+
+<p>次は赤外線信号の取り込みです。 Internet HTTP API の <a href="http://getirkit.com/#IRKit-Internet-GET-1-messages">GET /1/messages</a> は最も新しい受信した赤外線信号を返してくれるAPIです。
+新しい赤外線信号がIRKitデバイスから届いたらただちにレスポンスを返します。</p>
+
+<p><code>
+$ curl -i "http://api.getirkit.com/1/messages?clientkey= FEDCBA9876543210FEDCBA9876543210&amp;clear=1"
+</code></p>
+
+<p>ロングポーリングでレスポンスが返ってこない状態になります。</p>
+
+<p>次に、IRKitにリモコンを向けながら、エアコンONボタンを1度だけ押してみましょう。青色LEDが点滅したら赤外線信号受信ができているようです。</p>
+
+<p>```
+HTTP/1.1 200 OK
+Server: ngx_openresty
+Date: Sat, 01 Feb 2014 07:43:49 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 2506
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: X-Requested-With
+ETag: &ldquo;-1919363029&rdquo;
+X-Content-Type-Options: nosniff</p>
+
+<p>{&ldquo;message&rdquo;:{&ldquo;format&rdquo;:&ldquo;raw&rdquo;,&ldquo;freq&rdquo;:38,&ldquo;data&rdquo;:[5408,6648,262,6424,322,1366,382,1232,205,1622,280,1275,395,1413,205,1275,539,1037,619,1111,539,1073,663,968,761,968,619,1232,470,1111,558,1111,619,1073,619,968,619,968,735,1073,663,904,735,968,735,968,735,2626,710,904,904,904,735,904,735,904,815,904,710,968,710,968,710,873,873,873,873,873,761,873,873,873,873,873,761,873,873,873,873,873,873,873,873,873,873,873,873,873,761,873,761,873,761,2537,873,873,873,2537,873,2537,873,2537,873,873,873,2537,873]},&ldquo;hostname&rdquo;:&ldquo;IRKitD2C7&rdquo;,&ldquo;deviceid&rdquo;:&ldquo;32658096E6ED4AE3977E4B6BEFCA5493&rdquo;}
+```</p>
+
+<p>この<code>message</code>部分がエアコンONの赤外線信号のJSONです。</p>
+
+<hr />
+
+<h3>2.Internet HTTP APIを使ってエアコンをONする</h3>
+
+<p>さきほど得られたmessageのJSONを使って、試しにエアコンをONにしてみましょう。Internet HTTP API の <a href="http://getirkit.com/#IRKit-Internet-POST-1-messages">POST /1/messages</a> を使います。</p>
+
+<p>```
+$ curl -i &ldquo;<a href="http://api.getirkit.com/1/messages">http://api.getirkit.com/1/messages</a>&rdquo; \
+-d &ldquo;clientkey=FEDCBA9876543210FEDCBA9876543210&rdquo; \
+-d &ldquo;deviceid=0123456789ABCDEF0123456789ABCDEF&rdquo; \
+-d &lsquo;message={&ldquo;format&rdquo;:&ldquo;raw&rdquo;,&ldquo;freq&rdquo;:38,&ldquo;data&rdquo;:[5408,6648,262,6424,322,1366,382,1232,205,1622,280,1275,395,1413,205,1275,539,1037,619,1111,539,1073,663,968,761,968,619,1232,470,1111,558,1111,619,1073,619,968,619,968,735,1073,663,904,735,968,735,968,735,2626,710,904,904,904,735,904,735,904,815,904,710,968,710,968,710,873,873,873,873,873,761,873,873,873,873,873,761,873,873,873,873,873,873,873,873,873,873,873,873,873,761,873,761,873,761,2537,873,873,873,2537,873,2537,873,2537,873,873,873,2537,873]}&rsquo;
+HTTP/1.1 100 Continue</p>
+
+<p>HTTP/1.1 200 OK
+Server: ngx_openresty
+Date: Sat, 01 Feb 2014 07:47:26 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: X-Requested-With
+X-Content-Type-Options: nosniff
+```</p>
+
+<p>これでエアコンがつくはずです！
+次にこのAPIをHipChatから叩けるようにしてみましょう。</p>
+
+<hr />
+
+<h3>3.HUBOTをローカルで動かす</h3>
+
+<p>HipChatからIRKitのInternet HTTP APIを使うために、チャットボット<a href="http://hubot.github.com/">HUBOT</a>とそのHipChatアダプタ<a href="https://github.com/hipchat/hubot-hipchat">hubot-hipchat</a>を利用します。今回は自分のMac上でHUBOTを動かしてみましょう。</p>
+
+<p>まず、HUBOTをインストールします。</p>
+
+<p><code>
+$ npm install --global coffee-script hubot@v2.6.4
+</code></p>
+
+<p>そしてHUBOTのプロジェクトテンプレートを作成。</p>
+
+<p><code>
+$ hubot --create hubot
+$ cd hubot
+$ ls
+Procfile               README.md              bin/                   external-scripts.json  hubot-scripts.json     package.json           scripts/
+</code></p>
+
+<p>hubot-hipchat をインストール</p>
+
+<p><code>
+$ npm install
+$ npm install --save hubot-hipchat
+</code></p>
+
+<p>初期状態だとRedisを使うようになっているのですが、今回は特に使わないので <code>hubot-scripts.json</code> を編集して該当スクリプトを無効にします。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>hubot-scripts.json </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">[</span><span class="err">&amp;ldquo;shipit.coffee&amp;rdquo;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>これでHUBOTの準備は整いました。</p>
+
+<p>次にHipChat側でボット用のアカウントを作成しましょう(HipChatはボットにも月$2かかっちゃうのが残念）。アカウント作成はHipChatのWebサイトから行います。</p>
+
+<p>HUBOTからHipChatのルームにアクセスするためには以下の情報が必要です。</p>
+
+<ul>
+<li>ボットアカウントのJID: XMPP/Jaberのアカウント名</li>
+<li>パスワード: ボットアカウントを作った時のパスワード</li>
+<li>ルームのJID: ルームは<a href="http://xmpp.org/extensions/xep-0045.html">XMPPのMUC</a>で実装されているようです</li>
+</ul>
+
+
+<p>ボットアカウントとルームのJIDは、HipChatのWebページの <code>My account</code> &ndash;> <code>Account settings</code> &ndash;> <code>XMPP/Jabber info</code> に掲載されています。</p>
+
+<p><img src="/images/201405/hipchat_settings.png" alt="HipChat setting" /></p>
+
+<p>ルームのJIDは、「ルームのXMPP/JabberName@ルームのドメイン」となります。上の画像だと、「****_android@conf.hipchat.com」がルームのJIDとなります。</p>
+
+<p>上記の3つの情報を元にHUBOTを起動してみましょう。起動するためのスクリプト <code>run.sh</code> を以下のように書きます。exportしている情報は上記でゲットしたものを入力してください。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>run.sh </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;export <span class="nv">HUBOT_HIPCHAT_JID</span><span class="o">=</span>&amp;ldquo;01234_56789@chat.hipchat.com&amp;rdquo;
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_HIPCHAT_PASSWORD</span><span class="o">=</span>&amp;ldquo;passworddayo&amp;rdquo;
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_HIPCHAT_ROOMS</span><span class="o">=</span>&amp;ldquo;01234_&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;&amp;#x6d;&amp;#97;&amp;#x69;&amp;#108;&amp;#116;&amp;#111;&amp;#58;&amp;#x61;&amp;#110;&amp;#x64;&amp;#x72;&amp;#111;&amp;#105;&amp;#x64;&amp;#64;&amp;#99;&amp;#111;&amp;#110;&amp;#102;&amp;#46;&amp;#x68;&amp;#x69;&amp;#112;&amp;#x63;&amp;#104;&amp;#97;&amp;#116;&amp;#46;&amp;#99;&amp;#x6f;&amp;#x6d;&quot;</span>&gt;&amp;#x61;&amp;#x6e;&amp;#100;&amp;#x72;&amp;#111;&amp;#x69;&amp;#x64;&amp;#x40;&amp;#x63;&amp;#x6f;&amp;#110;&amp;#102;&amp;#x2e;&amp;#x68;&amp;#105;&amp;#112;&amp;#x63;&amp;#104;&amp;#97;&amp;#116;&amp;#46;&amp;#x63;&amp;#111;&amp;#x6d;&lt;/a&gt;&amp;rdquo; <span class="c"># ROOM JID&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;bin/hubot &amp;mdash;adapter hipchat
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>そして実行！</p>
+
+<p><code>
+$ bash run.sh
+[Sun Feb 02 2014 07:45:59 GMT+0900 (JST)] INFO Connecting HipChat adapter...
+[Sun Feb 02 2014 07:46:03 GMT+0900 (JST)] INFO Connected to hipchat.com as @hubot
+[Sun Feb 02 2014 07:46:03 GMT+0900 (JST)] WARNING The HUBOT_AUTH_ADMIN environment variable not set
+[Sun Feb 02 2014 07:46:04 GMT+0900 (JST)] INFO Joining 01234_android@conf.hipchat.com
+</code></p>
+
+<p>ルームに以下の表示が出ていれば成功です。</p>
+
+<p><code>
+[HUBOTアカウントのニックネーム] joined the room
+</code></p>
+
+<hr />
+
+<h3>4.HUBOTにエアコン機能を付け加える</h3>
+
+<p>HUBOT に hubot-hipchat アダプタを追加することで、HUBOTが参加しているルームに流れてくる文字列を読み取り、コマンドに応じた処理を実行することができるようになりました。</p>
+
+<p>どういうコマンドが来たらどういう処理をするか、ということは <code>scripts</code> ディレクトリのスクリプトで定義されています。新しいコマンドとその処理の定義は、こちらの <code>scripts</code> ディレクトリにスクリプトを追加することで可能となります。</p>
+
+<p>今回は <code>air</code> というエアコンコマンドを実装してみましょう。「@hubot air on」でエアコンをON、「@hubot air off」でエアコンをOFFできるようにするスクリプトは以下です。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>air.coffee </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Description</span><span class="o">:&lt;/</span><span class="nx">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Air</span> <span class="nx">controller</span><span class="o">&lt;/</span><span class="nx">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="c1">#&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Commands</span><span class="o">:&lt;/</span><span class="nx">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">hubot</span> <span class="nx">air</span> <span class="p">(</span><span class="kc">on</span><span class="o">|</span><span class="kc">off</span><span class="p">)</span> <span class="o">&amp;</span><span class="nx">ndash</span><span class="p">;</span> <span class="k">switch</span> <span class="nx">air</span><span class="o">&lt;/</span><span class="nx">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">module.exports = </span><span class="p">(</span><span class="nx">robot</span><span class="p">)</span> <span class="o">&amp;</span><span class="nx">ndash</span><span class="p">;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="nv">IRKIT_MESSAGE_API = </span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s">&quot;http://api.getirkit.com/1/messages&quot;</span><span class="o">&gt;</span><span class="nx">http</span><span class="o">://</span><span class="nx">api</span><span class="p">.</span><span class="nx">getirkit</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="nx">messages</span><span class="o">&lt;/</span><span class="nx">a</span><span class="o">&gt;&amp;</span><span class="nx">rdquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="nv">CLIENT_KEY = </span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">YOUR_CLIENT_KEY</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="nv">DEVICE_ID = </span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">YOUR_DEVICE_ID</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="nv">MESSAGE_ON = </span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;{</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">format</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span><span class="o">:&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">raw</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">freq</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span><span class="o">:</span><span class="mi">38</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">data</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span><span class="o">:</span><span class="p">[</span><span class="mi">6648</span><span class="p">,</span><span class="mi">3341</span><span class="p">,</span><span class="mi">843</span><span class="p">,</span><span class="err">・・省略・・</span><span class="p">,</span><span class="mi">843</span><span class="p">,</span><span class="mi">2537</span><span class="p">,</span><span class="mi">843</span><span class="p">]}</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="c1"># your ON message</span>
+</span><span class='line'>  <span class="nv">MESSAGE_OFF = </span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;{</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">format</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span><span class="o">:&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">raw</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">freq</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span><span class="o">:</span><span class="mi">38</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">data</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span><span class="o">:</span><span class="p">[</span><span class="mi">6881</span><span class="p">,</span><span class="mi">3228</span><span class="p">,</span><span class="mi">904</span><span class="p">,</span><span class="err">・・省略・・</span><span class="p">,</span><span class="mi">935</span><span class="p">,</span><span class="mi">2451</span><span class="p">,</span><span class="mi">935</span><span class="p">]}</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="c1"># your OFF message&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nv">postIRKit = </span><span class="p">(</span><span class="nx">msg</span><span class="p">,</span> <span class="nx">json</span><span class="p">,</span> <span class="nx">output</span><span class="p">)</span> <span class="o">&amp;</span><span class="nx">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">robot</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">http</span> <span class="nx">IRKIT_MESSAGE_API</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">query</span>
+</span><span class='line'>    <span class="nv">clientkey: </span><span class="nx">CLIENT_KEY</span>
+</span><span class='line'>    <span class="nv">deviceid: </span><span class="nx">DEVICE_ID</span>
+</span><span class='line'>    <span class="nv">message: </span><span class="nx">json</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">post</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">msg</span><span class="p">.</span><span class="nx">send</span> <span class="nx">output</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">robot</span><span class="p">.</span><span class="nx">respond</span> <span class="sr">/air (on|off)/i</span><span class="p">,</span> <span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="o">&amp;</span><span class="nx">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nv">sw = </span><span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</span><span class='line'><span class="k">if</span> <span class="nx">sw</span> <span class="o">is</span> <span class="s">&quot;on&quot;</span>
+</span><span class='line'>  <span class="nx">postIRKit</span> <span class="nx">msg</span><span class="p">,</span> <span class="nx">MESSAGE_ON</span><span class="p">,</span> <span class="s">&quot;ON&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="nx">postIRKit</span> <span class="nx">msg</span><span class="p">,</span> <span class="nx">MESSAGE_OFF</span><span class="p">,</span> <span class="s">&quot;OFF&quot;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>HUBOTのスクリプトは、基本的には以下の形式で反応させたいコマンドを正規表現で指定して、内部に処理を書いていきます。</p>
+
+<p><code>
+  robot.respond /air (on|off)/i, (msg) -&gt;
+</code></p>
+
+<p>scripts ディレクトリにはたくさんのスクリプトが入っているので、それらを見れば雰囲気はだいたい把握できると思います！</p>
+
+<p>これで再度</p>
+
+<p><code>
+$ bash run.sh
+</code></p>
+
+<p>を実行して、HUBOTがいる部屋で <code>@hubot air on</code> とつぶやいてみましょう。</p>
+
+<p><img src="/images/201405/hipchat_air_on.png" alt="HUBOT AIR" /></p>
+
+<p>これで快適エアコンライフ！がんばれば温度もコントロールできそうです。</p>
+
+<p>上記のコードは <a href="https://github.com/hideyuki/hubot-hipchat-air">GitHub</a> に公開しています。</p>
+
+<p>Beatroboではこのhubotちゃんを Heroku で動かしてます。
+もしエアコン大好きな方はぜひBeatroboに遊びに来てください。</p>
+
+<p>ではでは！あでゅ！</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
+    <url>
+        <loc>http://tech.beatrobo.com/blog/2014/02/01/irkit-hipchat-onoff-air/</loc>
+        <lastmod>2014-05-04T06:45:23+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://tech.beatrobo.com/about/</loc>
+        <lastmod>2014-05-04T05:27:59+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://tech.beatrobo.com/archives/</loc>
+        <lastmod>2014-05-04T06:45:23+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://tech.beatrobo.com/blog/archives/</loc>
+        <lastmod>2014-05-04T06:45:23+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://tech.beatrobo.com/blog/</loc>
+        <lastmod>2014-05-04T06:45:23+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://tech.beatrobo.com/</loc>
+        <lastmod>2014-05-04T06:45:23+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://tech.beatrobo.com/robots.txt</loc>
+        <lastmod>2014-05-04T05:24:41+09:00</lastmod>
+    </url>
+</urlset>
