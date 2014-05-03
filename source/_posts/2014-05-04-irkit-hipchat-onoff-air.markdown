@@ -146,7 +146,9 @@ $ npm install --save hubot-hipchat
 
 初期状態だとRedisを使うようになっているのですが、今回は特に使わないので `hubot-scripts.json` を編集して該当スクリプトを無効にします。
 
-{% gist d64bbee03f6da64a42e9 hubot-scripts.json %}
+{% codeblock hubot-scripts.json %}
+["shipit.coffee"]
+{% endcodeblock %}
 
 これでHUBOTの準備は整いました。
 
@@ -166,7 +168,15 @@ HUBOTからHipChatのルームにアクセスするためには以下の情報�
 
 上記の3つの情報を元にHUBOTを起動してみましょう。起動するためのスクリプト `run.sh` を以下のように書きます。exportしている情報は上記でゲットしたものを入力してください。
 
-{% gist d64bbee03f6da64a42e9 run.sh %}
+{% codeblock run.sh %}
+#!/bin/bash
+ 
+export HUBOT_HIPCHAT_JID="01234_56789@chat.hipchat.com"
+export HUBOT_HIPCHAT_PASSWORD="passworddayo"
+export HUBOT_HIPCHAT_ROOMS="01234_android@conf.hipchat.com" # ROOM JID
+ 
+bin/hubot --adapter hipchat
+{% endcodeblock %}
 
 そして実行！
 
@@ -194,7 +204,37 @@ HUBOT に hubot-hipchat アダプタを追加することで、HUBOTが参加し
 
 今回は `air` というエアコンコマンドを実装してみましょう。「@hubot air on」でエアコンをON、「@hubot air off」でエアコンをOFFできるようにするスクリプトは以下です。
 
-{% gist d64bbee03f6da64a42e9 air.coffee %}
+{% codeblock air.coffee %}
+# Description:
+#   Air controller
+#
+# Commands:
+#   hubot air (on|off) - switch air
+ 
+module.exports = (robot) ->
+  IRKIT_MESSAGE_API = "http://api.getirkit.com/1/messages"
+  CLIENT_KEY = "YOUR_CLIENT_KEY"
+  DEVICE_ID = "YOUR_DEVICE_ID"
+  MESSAGE_ON = '{"format":"raw","freq":38,"data":[6648,3341,843,・・省略・・,843,2537,843]}' # your ON message
+  MESSAGE_OFF = '{"format":"raw","freq":38,"data":[6881,3228,904,・・省略・・,935,2451,935]}' # your OFF message
+ 
+  postIRKit = (msg, json, output) ->
+    robot
+      .http IRKIT_MESSAGE_API
+      .query
+        clientkey: CLIENT_KEY
+        deviceid: DEVICE_ID
+        message: json
+      .post (err, res, body) ->
+        msg.send output
+ 
+  robot.respond /air (on|off)/i, (msg) ->
+    sw = msg.match[2]
+    if sw is "on"
+      postIRKit msg, MESSAGE_ON, "ON"
+    else
+      postIRKit msg, MESSAGE_OFF, "OFF"
+{% endcodeblock %}
 
 HUBOTのスクリプトは、基本的には以下の形式で反応させたいコマンドを正規表現で指定して、内部に処理を書いていきます。
 

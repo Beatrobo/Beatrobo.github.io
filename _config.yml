@@ -3,8 +3,8 @@
 # ----------------------- #
 
 url: http://tech.beatrobo.com
-title: Playground!
-subtitle: of Beatrobo, Inc.
+title: Playground
+subtitle: Tech Blog of Beatrobo, Inc.
 author: Engineers of Beatrobo, Inc.
 simple_search: https://www.google.com/search
 description: Tech Blog of Beatrobo, Inc.
@@ -90,7 +90,7 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name: playground-beatrobo
+disqus_short_name: "playground-beatrobo"
 disqus_show_comment_count: true
 
 # Google Analytics

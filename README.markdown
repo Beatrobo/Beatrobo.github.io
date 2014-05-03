@@ -65,6 +65,33 @@ Example
 [Gist Tag](http://octopress.org/docs/plugins/gist-tag/)
 
 
+#### コード
+
+Syntax
+ 
+ ```
+ {% codeblock [lang:language] [title] [url] [link text] [start:#] [mark:#,#-#] [linenos:false] %}
+code snippet
+{% endcodeblock %}
+ ```
+ 
+ Example
+ 
+ ```
+ {% codeblock run.sh %}
+#!/bin/bash
+ 
+export HUBOT_HIPCHAT_JID="01234_56789@chat.hipchat.com"
+export HUBOT_HIPCHAT_PASSWORD="passworddayo"
+export HUBOT_HIPCHAT_ROOMS="01234_android@conf.hipchat.com" # ROOM JID
+ 
+bin/hubot --adapter hipchat
+{% endcodeblock %}
+ ```
+ 
+ [Codeblock](http://octopress.org/docs/plugins/codeblock/)
+
+
 ### Markdownの書き方
 - [GitHub Flavored Markdown](https://help.github.com/articles/github-flavored-markdown)
 
