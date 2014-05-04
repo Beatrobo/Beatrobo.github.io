@@ -4,7 +4,7 @@ title: "IRKitを使ってHipChatからエアコンを制御する"
 date: 2014-02-01 01:55:46 +0900
 comments: true
 published: true
-author: hide@beatrobo.com
+author: hide
 categories: [irkit, hipchat, hubot]
 ---
 
@@ -14,7 +14,7 @@ categories: [irkit, hipchat, hubot]
 
 第一弾はIRKitに関して！
 
-![IRKit](/images/201405/irkit.jpg)
+{% img /images/201405/irkit.jpg 500 %}
 
 [IRKit](http://getirkit.com/)とは、[@maaash](https://twitter.com/maaash)さんが開発しているWiFi機能の付いたオープンソースな赤外線リモコンデバイスです。[Arduinoのソースコードや基板の回路図も公開](https://github.com/irkit/device)されています。また、IRKitをローカルネットワークから制御するための[Device HTTP API](http://getirkit.com/#IRKit-Device-API)や、インターネット越しに制御するための[Internet HTTP API](http://getirkit.com/#IRKit-Internet-API)も用意されています。
 

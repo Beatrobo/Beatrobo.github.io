@@ -2,7 +2,23 @@
   {% assign author = post.author %}
 {% elsif page.author %}
   {% assign author = page.author %}
-{% else %}
-  {% assign author = site.author %}
 {% endif %}
-{% if author %}<span class="byline author vcard">Posted by <span class="fn">{{ author }}</span></span>{% endif %}
+
+{% if page.author and site.authors[author] and site.authors[author].email and site.authors[author].name %}
+<div>
+  <img class="no_border" src="/images/robo/{{ author }}.png" />
+</div>
+<span>
+  <span class="byline author vcard" style="margin-right: 4px">
+    Posted by <span class="fn"><a href="mailto:{{ site.authors[author].email}}">{{ site.authors[author].name }}</a></span>
+  </span>
+  {% if site.authors[author].fb %}
+  <a href="{{ site.authors[author].fb }}" target="_blank"><img class="no_border" src="/images/social/fb.png" width="20" height="20" /></a>
+  {% endif %}
+  {% if site.authors[author].tw %}
+  <a href="{{ site.authors[author].tw }}" target="_blank"><img class="no_border" src="/images/social/tw.png" width="20" height="20" /></a>
+  {% endif %}
+</span>
+{% elsif author %}
+<span class="byline author vcard">Posted by <span class="fn">{{ author }}</span></span>
+{% endif %}

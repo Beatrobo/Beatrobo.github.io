@@ -1,8 +1,8 @@
 # tech.beatrobo.com
 
 ## 概要
-- [Octopress](http://octopress.org/)を利用
-- BitBucketのプライベートリポジトリでソースコード管理、GitHub Pagesでページ公開（パブリックリポジトリ）
+- [Octopress](http://octopress.org/) を利用
+- BitBucket のプライベートリポジトリでソースコード管理、GitHub Pages でページ公開（パブリックリポジトリ）
 
 ## 環境構築
 ```
@@ -59,12 +59,22 @@ $ git commit -m "unko"
 $ git push -u bitbucket source
 ```
 
-### 非公開で保存
-`published: true` を記事の頭に追加
+### TIPS
 
-### 記事中に「続きを読む」をつける
+#### 非公開で保存
+`published: true` を記事の頭に追加。記事として表示されなくなる。
+
+#### 記事中に「続きを読む」をつける
 「続きを読む」を付けたいところに `<!-- more -->` をつけましょう。
 
+#### 画像の置き場所
+`source/images/201405` のような感じで、月ごとにディレクトリを作って画像を格納。すると `/images/201405/irkit.jpg` という感じの相対URLで参照できるようになる。
+
+そして、markdownでは以下のように指定して画像を貼ることができる。
+
+```
+{% img /images/201405/irkit.jpg 500 %}
+```
 
 ### よく使うタグ
 #### Gistタグ

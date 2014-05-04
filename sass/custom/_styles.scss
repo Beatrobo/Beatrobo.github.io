@@ -1,10 +1,12 @@
 // This File is imported last, and will override other styles in the cascade
 // Add styles here to make changes without digging in too much
 
+
 @font-face {
 	  font-family: "League";
 	    src: url('/font/LeagueGothic.otf');
     }
+
 
     //a:visited, #content .blog-index article h1 a:hover { color: #F2583E; }
     #content .blog-index article h1 a:hover { color: #D22072; }
@@ -17,7 +19,7 @@
 
     html {
       //background: #262C33 url("../images/background.jpg");
-      background: #2D88Ae url("../images/background_sky.png");
+      background: #FFF url("../images/background_sky.png");
       background-attachment: fixed;
     }
 
@@ -143,6 +145,11 @@
       rder-radius: none;
       -webkit-box-shadow: none;
       box-shadow: none;
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      -ms-border-radius: 0;
+      -o-border-radius: 0;
+      border-radius: 0;
     }
   }
 
@@ -166,11 +173,25 @@
 
 	    body > footer{
 	      -moz-border-radius: 0;
-	        -webkit-border-radius: 0;
-	  border-radius:0;
-	    margin-bottom: 0;
+	      -webkit-border-radius: 0;
+	      border-radius:0;
+	      margin-bottom: 0;
+
 	    }
 
+      img.no_border {
+        margin: 0 auto;
+        border: none;
+        -webkit-border-radius: none;
+        rder-radius: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        -ms-border-radius: 0;
+        -o-border-radius: 0;
+        border-radius: 0;
+      }
 
 	    /* ----- 404 ----- */
 
