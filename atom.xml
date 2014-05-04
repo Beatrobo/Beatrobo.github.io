@@ -4,7 +4,7 @@
   <title><![CDATA[Playground]]></title>
   <link href="http://tech.beatrobo.com/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2014-05-04T08:42:24+09:00</updated>
+  <updated>2014-05-04T09:18:19+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
     <name><![CDATA[Engineers of Beatrobo, Inc.]]></name>
@@ -29,6 +29,9 @@
 <p><a href="http://getirkit.com/">IRKit</a>とは、<a href="https://twitter.com/maaash">@maaash</a>さんが開発しているWiFi機能の付いたオープンソースな赤外線リモコンデバイスです。<a href="https://github.com/irkit/device">Arduinoのソースコードや基板の回路図も公開</a>されています。また、IRKitをローカルネットワークから制御するための<a href="http://getirkit.com/#IRKit-Device-API">Device HTTP API</a>や、インターネット越しに制御するための<a href="http://getirkit.com/#IRKit-Internet-API">Internet HTTP API</a>も用意されています。</p>
 
 <p>今回はこのIRKitを使って<a href="https://www.hipchat.com/%E2%80%8E">HipChat</a>からエアコンを制御する方法を順を追ってご紹介します！</p>
+
+<!-- more -->
+
 
 <hr />
 
