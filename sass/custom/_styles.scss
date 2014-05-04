@@ -135,6 +135,17 @@
 
 	aside.sidebar a { text-decoration: none; }
 
+  aside {
+    img.no_border {
+      margin: 0px 0px 10px 0px;
+      border: none;
+      -webkit-border-radius: none;
+      rder-radius: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+
 	.toggle-sidebar{display: none;}
 
 	ul#gh_repos > li > a{
