@@ -16,6 +16,35 @@ $ bundle install --path bundle
 
 ## ブログの書き方
 
+### authorの登録
+このブログでは、各ポストでauthorをロボットで表示します。
+
+そのため最初に_config.ymlにauthor情報の追加とロボット画像の追加が必要です。
+
+#### _config.ymlにauthor情報の追加
+`_config.yml` の一番下にauthor情報を追加します。
+
+`new_user_name` のキーと、その中の name, email, fb, tw のキーを情報を追記してね。以下例です。
+
+```
+# authors info
+authors:
+  hide:
+    name: Hideyuki Takei
+    email: hide@beatrobo.com
+    fb: https://www.facebook.com/hidep
+    tw: https://twitter.com/HideyukiTakei
+  new_user_name:
+    name: New User Full Name
+    email: newuser@beatrobo.com
+    fb: https://www.facebook.com/new_user_fb_name
+    tw: https://twitter.com/new_user_tw_name
+```
+
+#### ロボット画像の追加
+上記のauthor情報 `new_user_name` で登録したあとは、ロボットの画像を登録してね。ファイル名は `new_user_name` で指定したものにしよう。画像の場所は `source/images/robo/***.png` です。
+
+
 ### 記事作成
 ```
 $ bundle exec rake new_post["ブログの英語タイトル(URLに使われる)"]
