@@ -4,10 +4,10 @@
   <title><![CDATA[Category: hipchat | Playground]]></title>
   <link href="http://tech.beatrobo.com/blog/categories/hipchat/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2014-05-04T09:42:56+09:00</updated>
+  <updated>2014-05-04T19:07:18+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
-    <name><![CDATA[Engineers of Beatrobo, Inc.]]></name>
+    <name><![CDATA[Beatrobo, Inc.]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -24,7 +24,7 @@
 
 <p>第一弾はIRKitに関して！</p>
 
-<p><img src="/images/201405/irkit.jpg" alt="IRKit" /></p>
+<p><img src="/images/201405/irkit.jpg" width="500"></p>
 
 <p><a href="http://getirkit.com/">IRKit</a>とは、<a href="https://twitter.com/maaash">@maaash</a>さんが開発しているWiFi機能の付いたオープンソースな赤外線リモコンデバイスです。<a href="https://github.com/irkit/device">Arduinoのソースコードや基板の回路図も公開</a>されています。また、IRKitをローカルネットワークから制御するための<a href="http://getirkit.com/#IRKit-Device-API">Device HTTP API</a>や、インターネット越しに制御するための<a href="http://getirkit.com/#IRKit-Internet-API">Internet HTTP API</a>も用意されています。</p>
 
@@ -204,7 +204,7 @@ $ npm install --save hubot-hipchat
 </span><span class='line'>
 </span><span class='line'>&lt;p&gt;export <span class="nv">HUBOT_HIPCHAT_JID</span><span class="o">=</span>&amp;ldquo;01234_56789@chat.hipchat.com&amp;rdquo;
 </span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_HIPCHAT_PASSWORD</span><span class="o">=</span>&amp;ldquo;passworddayo&amp;rdquo;
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_HIPCHAT_ROOMS</span><span class="o">=</span>&amp;ldquo;01234_&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;&amp;#109;&amp;#x61;&amp;#105;&amp;#x6c;&amp;#x74;&amp;#x6f;&amp;#58;&amp;#97;&amp;#110;&amp;#100;&amp;#114;&amp;#111;&amp;#105;&amp;#100;&amp;#x40;&amp;#99;&amp;#x6f;&amp;#x6e;&amp;#x66;&amp;#x2e;&amp;#104;&amp;#105;&amp;#112;&amp;#x63;&amp;#104;&amp;#97;&amp;#x74;&amp;#46;&amp;#99;&amp;#111;&amp;#109;&quot;</span>&gt;&amp;#x61;&amp;#x6e;&amp;#100;&amp;#114;&amp;#x6f;&amp;#x69;&amp;#x64;&amp;#x40;&amp;#x63;&amp;#x6f;&amp;#110;&amp;#102;&amp;#x2e;&amp;#104;&amp;#x69;&amp;#x70;&amp;#x63;&amp;#104;&amp;#97;&amp;#116;&amp;#x2e;&amp;#99;&amp;#111;&amp;#109;&lt;/a&gt;&amp;rdquo; <span class="c"># ROOM JID&lt;/p&gt;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_HIPCHAT_ROOMS</span><span class="o">=</span>&amp;ldquo;01234_&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;&amp;#109;&amp;#x61;&amp;#x69;&amp;#108;&amp;#x74;&amp;#x6f;&amp;#x3a;&amp;#97;&amp;#110;&amp;#x64;&amp;#114;&amp;#111;&amp;#x69;&amp;#100;&amp;#x40;&amp;#99;&amp;#111;&amp;#x6e;&amp;#x66;&amp;#x2e;&amp;#x68;&amp;#x69;&amp;#x70;&amp;#x63;&amp;#104;&amp;#x61;&amp;#116;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#109;&quot;</span>&gt;&amp;#x61;&amp;#x6e;&amp;#x64;&amp;#x72;&amp;#111;&amp;#105;&amp;#100;&amp;#64;&amp;#99;&amp;#111;&amp;#x6e;&amp;#x66;&amp;#x2e;&amp;#x68;&amp;#105;&amp;#x70;&amp;#99;&amp;#x68;&amp;#x61;&amp;#x74;&amp;#46;&amp;#99;&amp;#111;&amp;#x6d;&lt;/a&gt;&amp;rdquo; <span class="c"># ROOM JID&lt;/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'>&lt;p&gt;bin/hubot &amp;mdash;adapter hipchat
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>

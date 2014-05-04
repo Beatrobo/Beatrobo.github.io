@@ -4,10 +4,10 @@
   <title><![CDATA[Playground]]></title>
   <link href="http://tech.beatrobo.com/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2014-05-04T09:42:56+09:00</updated>
+  <updated>2014-05-04T19:07:18+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
-    <name><![CDATA[Engineers of Beatrobo, Inc.]]></name>
+    <name><![CDATA[Beatrobo, Inc.]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -24,7 +24,7 @@
 
 <p>第一弾はIRKitに関して！</p>
 
-<p><img src="http://tech.beatrobo.com/images/201405/irkit.jpg" alt="IRKit" /></p>
+<p><img src="http://tech.beatrobo.com/images/201405/irkit.jpg" width="500"></p>
 
 <p><a href="http://getirkit.com/">IRKit</a>とは、<a href="https://twitter.com/maaash">@maaash</a>さんが開発しているWiFi機能の付いたオープンソースな赤外線リモコンデバイスです。<a href="https://github.com/irkit/device">Arduinoのソースコードや基板の回路図も公開</a>されています。また、IRKitをローカルネットワークから制御するための<a href="http://getirkit.com/#IRKit-Device-API">Device HTTP API</a>や、インターネット越しに制御するための<a href="http://getirkit.com/#IRKit-Internet-API">Internet HTTP API</a>も用意されています。</p>
 
