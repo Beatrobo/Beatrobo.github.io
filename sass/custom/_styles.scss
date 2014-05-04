@@ -6,7 +6,10 @@
 	    src: url('/font/LeagueGothic.otf');
     }
 
-    a:visited, #content .blog-index article h1 a:hover { color: #F2583E; }
+    //a:visited, #content .blog-index article h1 a:hover { color: #F2583E; }
+    #content .blog-index article h1 a:hover { color: #D22072; }
+    a, a:hover { color: #D22072; }
+    a:visited { color: #630F36; }
 
 
     /* ----- main layout ----- */

@@ -11,7 +11,6 @@ $ cd Beatrobo.github.io
 $ gem install bundler
 $ rbenv rehash
 $ bundle install --path bundle
-$ bundle exec rake install
 ```
 
 
@@ -22,7 +21,7 @@ $ bundle exec rake install
 $ bundle exec rake new_post["ブログの英語タイトル(URLに使われる)"]
 ```
 
-### プレビュー
+### プレビュー&編集
 ```
 $ bundle exec rake preview
 Starting to watch source with Jekyll and Compass. Starting Rack on port 4000
@@ -46,9 +45,29 @@ let us know if you need help transitioning! ^_^b
 
 そして `http://localhost:4000/` にアクセス！
 
+ソースコードを変更したら自動的にコンパイルが走ります。
+
+### GitHub Pageにデプロイ
+```
+$ bundle exec rake gen_deploy
+```
+
+### ソースコードをBitBucketにPush
+```
+$ git add .
+$ git commit -m "unko"
+$ git push -u bitbucket source
+```
+
+### 非公開で保存
+`published: true` を記事の頭に追加
+
+### 記事中に「続きを読む」をつける
+「続きを読む」を付けたいところに `<!-- more -->` をつけましょう。
+
 
 ### よく使うタグ
-#### Gist Tag
+#### Gistタグ
 
 Syntax
 
@@ -65,7 +84,7 @@ Example
 [Gist Tag](http://octopress.org/docs/plugins/gist-tag/)
 
 
-#### コード
+#### コードを貼るタグ
 
 Syntax
  
@@ -90,6 +109,24 @@ bin/hubot --adapter hipchat
  ```
  
  [Codeblock](http://octopress.org/docs/plugins/codeblock/)
+
+#### 画像タグ
+Syntax
+
+```
+{% img [class names] /path/to/image [width] [height] [title text [alt text]] %}
+```
+
+Example 
+
+```
+{% img http://placekitten.com/890/280 %}
+{% img left http://placekitten.com/320/250 Place Kitten #2 %}
+{% img right http://placekitten.com/300/500 150 250 Place Kitten #3 %}
+{% img right http://placekitten.com/300/500 150 250 'Place Kitten #4' 'An image of a very cute kitten' %}
+```
+
+[Image Tag](http://octopress.org/docs/plugins/image-tag/)
 
 
 ### Markdownの書き方
