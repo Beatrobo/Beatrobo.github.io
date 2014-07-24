@@ -3,9 +3,9 @@
 }
 aside.sidebar {
   overflow: hidden;
-  color: $sidebar-color;
+  //color: $sidebar-color;
   text-shadow: lighten($sidebar-bg, 8) 0 1px;
-  a { @extend .force-wrap; }
+  //a { @extend .force-wrap; }
   section {
     @extend .sans;
     font-size: .8em;
@@ -41,12 +41,13 @@ aside.sidebar {
     }
   }
   a {
-    color: inherit;
-    @include transition(color .5s);
+    //color: inherit;
+    color: #D22072;
+    //@include transition(color .5s);
   }
   &:hover a {
     color: $sidebar-link-color;
-    &:hover { color: $sidebar-link-color-hover; }
+    //&:hover { color: $sidebar-link-color-hover; }
   }
 }
 .aside-alt-link {

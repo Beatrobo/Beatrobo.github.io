@@ -14,7 +14,7 @@ categories: [irkit, hipchat, hubot]
 
 第一弾はIRKitに関して！
 
-{% img /images/201405/irkit.jpg 500 %}
+{% img /images/201405/irkit.jpg 600 %}
 
 [IRKit](http://getirkit.com/)とは、[@maaash](https://twitter.com/maaash)さんが開発しているWiFi機能の付いたオープンソースな赤外線リモコンデバイスです。[Arduinoのソースコードや基板の回路図も公開](https://github.com/irkit/device)されています。また、IRKitをローカルネットワークから制御するための[Device HTTP API](http://getirkit.com/#IRKit-Device-API)や、インターネット越しに制御するための[Internet HTTP API](http://getirkit.com/#IRKit-Internet-API)も用意されています。
 
