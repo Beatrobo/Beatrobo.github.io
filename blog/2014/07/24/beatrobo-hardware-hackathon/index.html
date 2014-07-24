@@ -1,0 +1,535 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Beatroboハードウェアハッカソン#1 を開催しました - Playground, Tech Blog of Beatrobo, Inc.</title>
+  <meta name="author" content="Beatrobo, Inc.">
+
+  
+  <meta name="description" content="2014年6月14日にBeatrobo引越記念でハードウェアハッカソンを開催しました！ 【6/14】Beatrobo引越記念！ハードウェア・ロボットハッカソン！！【お題自由。Arduino、BLE、ロボットなんでもOK】 ハードウェアハッカソンの雰囲気やみなさんの成果などを写真で報告しますっ！ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tech.beatrobo.com/blog/2014/07/24/beatrobo-hardware-hackathon">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Playground, Tech Blog of Beatrobo, Inc." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-27004662-6']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+<div id="title"><a href="/">Playground</a></div>
+<div id="subtitle">Tech Blog of Beatrobo, Inc.</div>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tech.beatrobo.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Beatroboハードウェアハッカソン#1 を開催しました</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-24T23:56:59+09:00" pubdate data-updated="true">Jul 24<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>2014年6月14日にBeatrobo引越記念でハードウェアハッカソンを開催しました！</p>
+
+<p><a href="http://beatrobo.doorkeeper.jp/events/12214">【6/14】Beatrobo引越記念！ハードウェア・ロボットハッカソン！！【お題自由。Arduino、BLE、ロボットなんでもOK】</a></p>
+
+<p><img src="/images/201406/hackathon1/hackathon-view.jpg" width="600"></p>
+
+<p>ハードウェアハッカソンの雰囲気やみなさんの成果などを写真で報告しますっ！</p>
+
+<!-- more -->
+
+
+<h1>ハッカソンのスケジュール</h1>
+
+<p>スケジュールはこんな感じです。</p>
+
+<ul>
+<li>13:00〜13:15  自己紹介 &amp; やること発表</li>
+<li>13:15〜20:00  ハッカソンタイム!</li>
+<li>20:00〜20:30  成果発表</li>
+<li>20:30〜22:00  ピザパーティ</li>
+</ul>
+
+
+<p>今回は土曜のお昼から集中して1日で成果を出すようにしてみました。</p>
+
+<p>経験的に2日もあると疲れるし逆に短いと面白いものができないので、6時間以上の作業時間を設定。</p>
+
+<h1>ハッカソンスタート！</h1>
+
+<p>参加者はエンジニア、デザイナ、アーティストなど様々で(女性2名も！)、Arduino入門される方もいれば3Dプリンタご持参のガチ勢もいるという楽しい雰囲気でスタート。 3Dプリンタって持ち歩くものなのですね！</p>
+
+<p><img src="/images/201406/hackathon1/3d_printer.jpg" width="600"></p>
+
+<p>せっかくなので、私の水やりロボットのセンサケースを3Dプリンタで作っていただきました。</p>
+
+<p><img src="/images/201406/hackathon1/3d_printing.jpg" width="600"></p>
+
+<p>3D CAD(弊社では <a href="http://www.autodesk.co.jp/products/autodesk-inventor-family/overview">Autodesk Inventor</a> を利用しています)でロボット型のケースをデザインして、すぐにプリント開始！1時間ほどで完成しました！</p>
+
+<p><img src="/images/201406/hackathon1/watering_robot_3d_print.jpg" width="600"></p>
+
+<p>かなり細かいところまでちゃんと出力できてて、精度もこの規模の3Dプリンタではかなり出ていました。このプリンタの性能を見て、Beatrobo社内でも3Dプリンタがほしくなりました（笑）</p>
+
+<h1>みなさんの成果発表</h1>
+
+<p>7時間もあっという間で過ぎ去り、夜8時からは成果発表タイムです。</p>
+
+<h2>水やりロボット</h2>
+
+<p><img src="/images/201406/hackathon1/watering_alert_robot.jpg" width="600"></p>
+
+<ul>
+<li>私が取り組んだ課題「水やりロボット」</li>
+<li>いろいろ機構を考えているうちにめんどくさくなり、結局「水やりタイミングをhipchatで教えてくれるロボット」という形に着地</li>
+<li>方式は「土の湿度を測るセンサ &ndash;> Arduino &ndash;> RaspberryPiが水やりhubotのHTTP API叩く &ndash;> 水やりhubotが水やりタイミングの湿度になっていたらHipChatにつぶやく」</li>
+<li>そもそもどれくらいのセンサの値の時に「水やってくれー」とつぶやかせるかを確認するため、2週間くらいはずっとセンサの値をcronでつぶやかせてます</li>
+</ul>
+
+
+<h2>ウェアラブル楽器のプロトタイピング</h2>
+
+<p><img src="/images/201406/hackathon1/wearable_instrument.jpg" width="600"></p>
+
+<ul>
+<li>スボンを叩けばパーカッションの音がなる、というコンセプト</li>
+<li>服に導通するインクや、導通する素材をはったり</li>
+<li>なんとかズボンを叩いて、PCの中が反応するというものが作れた</li>
+</ul>
+
+
+<h2>アングリーバードのハック</h2>
+
+<p><img src="/images/201406/hackathon1/angry_bird_hack.jpg" width="600"></p>
+
+<ul>
+<li>今回ハードウェアハッカソンという体で開催した中、唯一ハードウェア要素を一切入れなかった猛者</li>
+<li>アングリーバードをハックしてAI機能を作ることができるのを試したとのこと</li>
+</ul>
+
+
+<h2>腕時計のプロトタイピング</h2>
+
+<p><img src="/images/201406/hackathon1/clock_prototype.jpg" width="600"></p>
+
+<ul>
+<li>サクラボードとRTCで腕時計のプロトタイピング</li>
+<li>aitendo で買ったディスプレイを利用しているとのこと</li>
+</ul>
+
+
+<h2>アルコールがきついとロボットが怒る</h2>
+
+<p><img src="/images/201406/hackathon1/angry_robot.jpg" width="600"></p>
+
+<ul>
+<li>かわいいロボット型アルコールセンサ</li>
+<li>アルコール濃度が高いとロボットの目が赤くなる！</li>
+</ul>
+
+
+<h2>Arduino 入門</h2>
+
+<p><img src="/images/201406/hackathon1/arduino.jpg" width="600"></p>
+
+<ul>
+<li><a href="http://www.amazon.co.jp/%E3%81%9F%E3%81%AE%E3%81%97%E3%81%84%E9%9B%BB%E5%AD%90%E5%B7%A5%E4%BD%9C-Arduino%E3%81%A7%E9%9B%BB%E5%AD%90%E5%B7%A5%E4%BD%9C%E3%82%92%E3%81%AF%E3%81%98%E3%82%81%E3%82%88%E3%81%86-%E9%AB%98%E6%A9%8B-%E9%9A%86%E9%9B%84/dp/4798032085">たのしい電子工作 Arduinoで電子工作をはじめよう!</a> で Arduino 入門</li>
+<li>光の明るさでビープ音の音が変わる</li>
+</ul>
+
+
+<h2>ポケベル打ち用キーボード製作</h2>
+
+<p><img src="/images/201406/hackathon1/poketbell_keyboard.jpg" width="600"></p>
+
+<ul>
+<li>テンキーのキーボードでポケベルうちを実現…のはずがっ！</li>
+<li>はんだづけが難しい</li>
+</ul>
+
+
+<h2>温め続けないと再生され続けない動画</h2>
+
+<p><img src="/images/201406/hackathon1/warming_movie.jpg" width="600"></p>
+
+<ul>
+<li>ペルチェ素子とArduino</li>
+<li>温もりを与え続けないと動画が止まる</li>
+</ul>
+
+
+<h2>自作のプリント基板の動作確認</h2>
+
+<ul>
+<li>かなり複雑なプリント基板の動作確認</li>
+<li>仲間といっしょに作っているプロダクトとのこと</li>
+</ul>
+
+
+<h2>周辺の画像をパシャパシャとってくれるロボット</h2>
+
+<p><img src="/images/201406/hackathon1/image_robot.jpg" width="600"></p>
+
+<ul>
+<li>RaspberryPiとマインドストームの組み合わせ</li>
+<li>チャットからコントロールできる</li>
+</ul>
+
+
+<h2>水やりロボット プロトタイピング</h2>
+
+<p><img src="/images/201406/hackathon1/watering_robot_prototype.jpg" width="600"></p>
+
+<ul>
+<li>こちらは水やりを自動化させるためのプロトタイピング！</li>
+<li>ハムスターの水やりボトルをハックし、サーボを動かすことで水がちょろちょろと出てくるように！</li>
+<li>このチームは7時間の作業時間中、4時間ほどを買い出しに費やした猛者</li>
+</ul>
+
+
+<h1>ピザパーティ</h1>
+
+<p>そしてピザパーティへ。</p>
+
+<p><img src="/images/201406/hackathon1/pizza_party.jpg" width="600"></p>
+
+<p>アーティストさんのメディアアートの実装方法をみんなで検討したりとなかなかおもしろい議論もできました。</p>
+
+<p>そして最後に記念写真を。</p>
+
+<p><img src="/images/201406/hackathon1/hackathon_all.jpg" width="600"></p>
+
+<h1>ハッカソンのKPT</h1>
+
+<h3>Keep</h3>
+
+<ul>
+<li>時間的には長すぎず短すぎずぴったりだった</li>
+<li><a href="https://pizzahut.jp/pc/top">ピザハット</a> の <a href="https://pizzahut.jp/pc/pizza/W000001176-001">ハッピー4</a> が好評</li>
+<li>3Dプリンタがあるとハッカソンが楽しくなる！創れるものの幅が広がる。</li>
+<li>12人くらいが現在のオフィスのキャパ &amp; 1人でホストできるちょうど良い人数</li>
+</ul>
+
+
+<h3>Ploblem</h3>
+
+<ul>
+<li>ピザやつまみの食べ物系が少なかった</li>
+<li>トイレがわかりにくい。場所のアナウンスとホワイトボードに書こう</li>
+<li>ハッシュタグの周知がされていなくてまとめにくい。ハッシュタグの周知</li>
+</ul>
+
+
+<h3>Try</h3>
+
+<ul>
+<li>3Dプリンタの導入。ハッカソンでもすぐに使えるように</li>
+<li>ハッシュタグ、トイレの場所などをホワイトボードに書く</li>
+<li>食べ物の充実</li>
+</ul>
+
+
+<h1>次回</h1>
+
+<p>ということで、<a href="http://genkei.thebase.in/items/508236">Trino　新型デルタ3Dプリンター　組立キット</a> を購入いたしました！納品が楽しみです。</p>
+
+<p>次は3Dプリンタ購入記念でハードウェアハッカソンを開きたいと思います。乞うご期待。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+    <div style="margin-bottom: 10px">
+  
+
+
+
+<div>
+  <img class="no_border" src="/images/robo/hide.png" />
+</div>
+<span>
+  <span class="byline author vcard" style="margin-right: 4px">
+    Posted by <span class="fn"><a href="mailto:hide@beatrobo.com">Hideyuki Takei</a></span>
+  </span>
+  
+  <a href="https://www.facebook.com/hidep" target="_blank"><img class="no_border" src="/images/social/fb.png" width="20" height="20" /></a>
+  
+  
+  <a href="https://twitter.com/HideyukiTakei" target="_blank"><img class="no_border" src="/images/social/tw.png" width="20" height="20" /></a>
+  
+</span>
+
+</div>
+      <div>
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-24T23:56:59+09:00" pubdate data-updated="true">Jul 24<span>th</span>, 2014</time></div>
+      <div>
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/hackathon/'>hackathon</a>
+  
+</span>
+
+</div>
+    </p>
+    
+      <div class="sharing">
+  <!-- hatebu-start -->
+  
+  <a href="http://b.hatena.ne.jp/entry/http://tech.beatrobo.com/blog/2014/07/24/beatrobo-hardware-hackathon/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  
+  <!-- hatebu-end -->
+
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.beatrobo.com/blog/2014/07/24/beatrobo-hardware-hackathon/" data-via="" data-counturl="http://tech.beatrobo.com/blog/2014/07/24/beatrobo-hardware-hackathon/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/01/irkit-hipchat-onoff-air/" title="Previous Post: IRKitを使ってHipChatからエアコンを制御する">&laquo; IRKitを使ってHipChatからエアコンを制御する</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Jobs</h1>
+
+  <div style="margin-top: 15px;">
+    <a href="/jobs"><img class="no_border" src="/images/hiring.png" width="200" height="110" /></a>
+  </div>
+
+  <div>
+    現在 <a href="https://corp.beatrobo.com" target="_blank">Beatrobo</a> では、以下の職種の正社員/アルバイトを募集中です！いっしょに <a href="https://www.plugair.com" target="_blank">PlugAir</a> の未来を創っていきましょう！<br/>
+  <div style="margin: 10px; padding: 0px;">
+    ・<a href="https://www.plugair.com/ja/jobs/#php-engineer">PHP/サーバサイドエンジニア</a><br/>
+    ・<a href="https://www.plugair.com/ja/jobs/#android-engineer">Android エンジニア</a><br/>
+    ・<a href="https://www.plugair.com/ja/jobs/#ios-engineer">iOS エンジニア</a><br/>
+    ・<a href="https://www.plugair.com/ja/jobs/#hardwear-engineer">ハードウェアエンジニア</a><br/>
+    ・<a href="https://www.plugair.com/ja/jobs/#arbeit">アルバイト</a><br/>
+  </div>
+  詳細は <a href="https://www.plugair.com/ja/jobs">Beatrobo社の採用ページ</a> をご覧ください。<br/>
+  お問い合わせは <a href="mailto:jobs@beatrobo.com">jobs@beatrobo.com</a> までお気軽に！
+  </div>
+
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/24/beatrobo-hardware-hackathon/">Beatroboハードウェアハッカソン#1 を開催しました</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/01/irkit-hipchat-onoff-air/">IRKitを使ってHipChatからエアコンを制御する</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/hackathon/'>hackathon (1)</a></li>
+<li class='category'><a href='/blog/categories/hipchat/'>hipchat (1)</a></li>
+<li class='category'><a href='/blog/categories/hubot/'>hubot (1)</a></li>
+<li class='category'><a href='/blog/categories/irkit/'>irkit (1)</a></li>
+
+  </ul>
+</section><section>
+  <h1>About Us</h1>
+  <div style="margin-top: 10px">
+    <a target="_blank" href="http://corp.beatrobo.com"><img class="no_border" src="/images/beatrobo_logo.png" width="200" height="43" /></a>
+  </div>
+
+  <div>
+    <a target="_blank" href="http://www.plugair.com"><img class="no_border" src="/images/plugair_logo.png" width="140" height="38" /></a>
+  </div>
+
+  <p>
+  Beatrobo, Inc.では、ソーシャル ミュージック サービス「<a href="https://www.beatrobo.com" target="_blank">Beatrobo</a>」や、インスタント コンテンツ メディア「<a href="https://www.plugair.com" target="_blank">PlugAir</a>」の開発・運営をしています。
+  <span style=""><br/>このブログでは、iOS, Androidアプリやインフラに関することはもちろん、ハードウェア開発や量産に関しての情報を発信していきます。</span>
+  </p>
+
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+Copyright &copy; 2014 - <a href="https://corp.beatrobo.com" target="_blank">Beatrobo, Inc.</a> -
+  <span class="credit">Powered by <a href="http://octopress.org" target="_blank">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'playground-beatrobo';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tech.beatrobo.com/blog/2014/07/24/beatrobo-hardware-hackathon/';
+        var disqus_url = 'http://tech.beatrobo.com/blog/2014/07/24/beatrobo-hardware-hackathon/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
