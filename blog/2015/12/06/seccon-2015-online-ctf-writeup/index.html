@@ -143,8 +143,8 @@
 
 <p>今回出題された問題は <a href="https://github.com/SECCON/SECCON2015_online_CTF">こちら</a>にすべて公開されています。</p>
 
-<p>ハードウェア系の問題2つで共通だったことは、RaspberryPi B+と74HC系のICが使われていたということ、回路構成は多数の外観写真から推定すること、だいたいの動作は提供されたPythonのソースコードで把握できた、でした。<br/>
-ということで、RaspberryPi B+のGPIOのピン配置を手元に置いておきましょう。<a href="https://www.raspberrypi.org/documentation/usage/gpio-plus-and-raspi2/README.md">GPIO: MODELS A+, B+ AND RASPBERRY PI 2</a> に公開されています。</p>
+<p>ハードウェア系の問題2つで共通だったことは、RaspberryPi B+と74HC系のICが使われていたということ、回路構成は多数の外観写真から推定すること、だいたいの動作は提供されたPythonのソースコードで把握できたことでした。<br/>
+ということで、RaspberryPi B+のGPIOのピン配置を手元に置いておきましょう。<a href="https://www.raspberrypi.org/documentation/usage/gpio-plus-and-raspi2/README.md">GPIO: MODELS A+, B+ AND RASPBERRY PI 2</a> で公開されています。</p>
 
 <p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/raspberrypi/gpio-numbers-pi2.png"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/raspberrypi/gpio-numbers-pi2.png" width="600"/></a></p>
 
@@ -205,12 +205,13 @@ ChristmasIllumiations.zip</p>
 </ul>
 
 
-<p>(関係式を整理すれば、もうちょっとシンプルになるかも。)</p>
+<p>(関係式を整理すれば、もうちょっとシンプルになるかも)</p>
 
 <p>この関係式をPythonのプログラムのほうに追加で実装すれば、実機がなくともプログラムを実行できるようになります。</p>
 
-<p>そして愚直に実装したコードがこちらです。
-<a href="https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup/blob/master/Reverse-Engineering-Hardware-1/gpio_sim.py">https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup/blob/master/Reverse-Engineering-Hardware-1/gpio_sim.py</a></p>
+<p>そして愚直に実装したコードがこちらです。</p>
+
+<p><a href="https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup/blob/master/Reverse-Engineering-Hardware-1/gpio_sim.py">https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup/blob/master/Reverse-Engineering-Hardware-1/gpio_sim.py</a></p>
 
 <p><code>gpio.py</code> からの主な変更点は</p>
 
@@ -414,7 +415,9 @@ counterhardware.zip</p>
 
 <h2>最後に</h2>
 
-<p>こんなセキュリティとハードウェアが好きなアルバイトや社員を募集しております！<a href="jobs@beatrobo.com">jobs@beatrobo.com</a>にどしどしご応募を！代々木でお待ちしております！</p>
+<p>こんなセキュリティとハードウェアが好きなアルバイトや社員を募集しております！<a href="mailto:jobs@beatrobo.com">jobs@beatrobo.com</a>にご連絡ください。</p>
+
+<p>ぜひBeatrobo代々木オフィスに遊びに来てくださーい！</p>
 </div>
 
 
