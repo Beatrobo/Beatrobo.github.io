@@ -4,7 +4,7 @@
   <title><![CDATA[Playground]]></title>
   <link href="http://tech.beatrobo.com/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2015-12-06T23:49:31+09:00</updated>
+  <updated>2015-12-07T04:09:35+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
     <name><![CDATA[Beatrobo, Inc.]]></name>
@@ -18,7 +18,179 @@
     <link href="http://tech.beatrobo.com/blog/2015/12/06/seccon-2015-online-ctf-writeup/"/>
     <updated>2015-12-06T23:44:04+09:00</updated>
     <id>http://tech.beatrobo.com/blog/2015/12/06/seccon-2015-online-ctf-writeup</id>
-    <content type="html"><![CDATA[<p>SECCON 2015 Online CTF Writeup</p>
+    <content type="html"><![CDATA[
+
+<p></p>
+
+<p>お久しぶりです。Beatrobo竹井です。</p>
+
+<p>12/5 15:00 〜 12/6 15:00 に開催された <a href="http://score.quals.seccon.jp/announcement/">SECCON 2015 Online CTF</a> の参加レポートと正解できたチャレンジの解法の解説をお送りします。</p>
+
+<p>今回初参加で、MITMというチーム名で私ひとり単身でのチャレンジ。まったく予習をしていなかったのでQRコードやパケット解析はほぼわからず、結局900点の202位で終了となりました。</p>
+
+<p>時間内に解けた問題は以下。</p>
+
+<ul>
+<li>Start SECCON CTF (50)</li>
+<li>SECCON WARS 2015 (100)</li>
+<li>Reverse-Engineering Android APK 1 (100)</li>
+<li>Reverse-Engineering Hardware 1 (400)</li>
+<li>Connect the server (100)</li>
+<li>Command-Line Quiz (100)</li>
+<li>Last Challenge (Thank you for playing) (50)</li>
+</ul>
+
+
+<p>締め切り終了10分後に&#8221;Reverse-Engineering Hardware 2 (500)&ldquo;の答えがわかってしまい、1日目にぐっすり寝たのを後悔。</p>
+
+<p>ということで今回は、私の得意分野であるハードウェア系の問題 &ldquo;Reverse-Engineering Hardware 1&amp;2&rdquo; の詳細な解説をしていきます。</p>
+
+<p>コードは <a href="https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup">https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup</a> に実行可能な状態で置いています。</p>
+
+<!-- more -->
+
+
+<h2>解説の前に</h2>
+
+<p>今回出題された問題は <a href="https://github.com/SECCON/SECCON2015_online_CTF">こちら</a>にすべて公開されています。</p>
+
+<p>ハードウェア系の問題2つで共通だったことは、RaspberryPi B+と74HC系のICが使われていたということ、回路構成は多数の外観写真から推定すること、だいたいの動作は提供されたPythonのソースコードで把握できた、でした。<br/>
+ということで、RaspberryPi B+のGPIOのピン配置を手元に置いておきましょう。<a href="https://www.raspberrypi.org/documentation/usage/gpio-plus-and-raspi2/README.md">GPIO: MODELS A+, B+ AND RASPBERRY PI 2</a> に公開されています。</p>
+
+<p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/raspberrypi/gpio-numbers-pi2.png"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/raspberrypi/gpio-numbers-pi2.png" width="600"/></a></p>
+
+<h2>Reverse-Engineering Hardware 1</h2>
+
+<h3>設問</h3>
+
+<p>私たちはデコーダーボードの写真と、すてきなテキストを生成するプログラムを入手した。<br/>
+解読のお手伝いをしてくれない？<br/>
+gpio.py<br/>
+ChristmasIllumiations.zip</p>
+
+<h3>提供されたもの</h3>
+
+<ul>
+<li>RaspberryPi上で動作するPythonのコード（プログラム中にGPIOを使っているので、実環境がないと動作しない）</li>
+<li>LEDがチカチカする動作ムービー</li>
+<li>回路構成を類推するための多数のデコーダーボード画像（以下のような画像が30枚ほど）</li>
+</ul>
+
+
+<p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-1/ChristmasIllumiations/DSC_0125.jpg"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-1/ChristmasIllumiations/DSC_0125.jpg" width="600"/></a></p>
+
+<h3>手順</h3>
+
+<p>上にあるデコーダーボード画像に写っているLEDのうち、ブレッドボード上部に刺さっている6個のLEDを左からL1からL6と、L6の下にあるLEDをL7と命名。</p>
+
+<p>また、ブレッドボード左下部に74HC74という<a href="http://www.marutsu.co.jp/contents/shop/marutsu/datasheet/TC74HC74A.pdf">Dフリップフロップ</a>が1つあるのを発見。</p>
+
+<p>まずはコードをざっくりみてRaspberryPiで利用しているGPIOのポートを確認。その後、多数の画像から回路構成を調査する。調査結果が以下。</p>
+
+<p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-1/circuit1.jpg"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-1/circuit1.jpg" width="600"/></a></p>
+
+<p>この適当な回路図ではL1とL2が下のほうに描かれていますが、紙面の関係上下に分けて書いただけで、L1〜L6は横一列に並んでいます。</p>
+
+<p>LED周辺の回路は基本的に、2つのダイオードでORを作り、その出力にLEDとプルアップ抵抗を繋いでいます。所々にGPIOの入力ピンも接続されており負論理となっています（LEDは正論理で、ONだと点灯)。図で表すと以下の様な感じ。</p>
+
+<p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-1/nor.jpg"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-1/nor.jpg" width="400"/></a></p>
+
+<p>で、D-FFまわりの回路はごちゃごちゃしているんですが、以下のような感じでした。（図やプログラムではD-FF単体をIC<sub>1</sub>、IC<sub>2</sub>と書いちゃってますがお気になさらず…）</p>
+
+<p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-1/circuit2.jpg"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-1/circuit2.jpg" width="600"/></a></p>
+
+<p>これら回路構成調査の結果から、以下の関係式となることがわかりました。</p>
+
+<ul>
+<li>L<sub>1</sub> = DA・<span class="ol">Q</span><sub>IC2</sub> = <span class="ol">X</span><sub>3</sub></li>
+<li>L<sub>2</sub> = <span class="ol">L</span><sub>1</sub>・<span class="ol">Q</span><sub>IC1</sub> = <span class="ol">X</span><sub>4</sub></li>
+<li>L<sub>3</sub> = DB・Q<sub>IC2</sub> = <span class="ol">X</span><sub>5</sub></li>
+<li>L<sub>4</sub> = <span class="ol">Q</span><sub>IC1</sub>・<span class="ol">Q</span><sub>IC2</sub></li>
+<li>L<sub>5</sub> = <span class="ol">Q</span><sub>IC1</sub>・<span class="ol">L</span><sub>4</sub></li>
+<li>L<sub>6</sub> = <span class="ol">Q</span><sub>IC2</sub>・<span class="ol">L</span><sub>4</sub></li>
+<li>L<sub>7</sub> = <span class="ol">L</span><sub>5</sub>・<span class="ol">L</span><sub>6</sub> = <span class="ol">X</span><sub>6</sub></li>
+<li>D<sub>IC1</sub> = DA</li>
+<li>D<sub>IC2</sub> = DB</li>
+<li>Q<sub>IC1</sub> = X<sub>1</sub></li>
+<li>Q<sub>IC2</sub> = X<sub>2</sub></li>
+</ul>
+
+
+<p>(関係式を整理すれば、もうちょっとシンプルになるかも。)</p>
+
+<p>この関係式をPythonのプログラムのほうに追加で実装すれば、実機がなくともプログラムを実行できるようになります。</p>
+
+<p>そして愚直に実装したコードがこちらです。
+<a href="https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup/blob/master/Reverse-Engineering-Hardware-1/gpio_sim.py">https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup/blob/master/Reverse-Engineering-Hardware-1/gpio_sim.py</a></p>
+
+<p>gpio.pyからの主な変更点は</p>
+
+<ul>
+<li>DA, DBが変更する時やFFのQの値が変わるタイミングでLEDの状態を更新する<code>update_led()</code>を実行</li>
+<li><code>encoder()</code>内で参照していたX<sub>1</sub>〜X<sub>6</sub>をFFのQやLEDの状態で置き換え</li>
+<li>CLKを進めていたところで<code>update_ff_q()</code>を実行し、Qの値を更新する</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>def encoder():
+</span><span class='line'>    v = 0
+</span><span class='line'>    v = ic1q                # x1 = ic1q
+</span><span class='line'>    v = 2*v + ic2q          # x2 = ic2q
+</span><span class='line'>    v = 2*v + int(not(l1))  # x3 = not l1
+</span><span class='line'>    v = 2*v + int(not(l2))  # x4 = not l2
+</span><span class='line'>    v = 2*v + int(not(l3))  # x5 = not l3
+</span><span class='line'>    v = 2*v + int(not(l7))  # x6 = not l7
+</span><span class='line'>    return v
+</span><span class='line'>
+</span><span class='line'>def update_led():
+</span><span class='line'>  global l1, l2, l3, l4, l5, l6, l7
+</span><span class='line'>  l1 = da or not(ic2q)
+</span><span class='line'>  l2 = not(l1) or not(ic1q)
+</span><span class='line'>  l3 = db or ic2q
+</span><span class='line'>  l4 = not(ic1q) or not(ic2q)
+</span><span class='line'>  l5 = not(ic1q) or not(l4)
+</span><span class='line'>  l6 = not(ic2q) or not(l4)
+</span><span class='line'>  l7 = not(l5) or not(l6)
+</span><span class='line'>
+</span><span class='line'>def update_ff_q():
+</span><span class='line'>  global ic1q, ic2q
+</span><span class='line'>  ic1q = da
+</span><span class='line'>  ic2q = db</span></code></pre></td></tr></table></div></figure>
+
+
+<p>で、結果は</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ./gpio_sim.py 
+</span><span class='line'>The flag is SECCON{###FD80UY#!8880UY#!8}</span></code></pre></td></tr></table></div></figure>
+
+
+
 ]]></content>
   </entry>
   
