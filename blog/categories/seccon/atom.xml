@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: SECCON | Playground]]></title>
+  <link href="http://tech.beatrobo.com/blog/categories/seccon/atom.xml" rel="self"/>
+  <link href="http://tech.beatrobo.com/"/>
+  <updated>2015-12-06T23:49:31+09:00</updated>
+  <id>http://tech.beatrobo.com/</id>
+  <author>
+    <name><![CDATA[Beatrobo, Inc.]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[SECCON 2015 Online CTF Writeup]]></title>
+    <link href="http://tech.beatrobo.com/blog/2015/12/06/seccon-2015-online-ctf-writeup/"/>
+    <updated>2015-12-06T23:44:04+09:00</updated>
+    <id>http://tech.beatrobo.com/blog/2015/12/06/seccon-2015-online-ctf-writeup</id>
+    <content type="html"><![CDATA[<p>SECCON 2015 Online CTF Writeup</p>
+]]></content>
+  </entry>
+  
+</feed>

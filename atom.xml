@@ -4,7 +4,7 @@
   <title><![CDATA[Playground]]></title>
   <link href="http://tech.beatrobo.com/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2014-07-24T23:44:01+09:00</updated>
+  <updated>2015-12-06T23:49:31+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
     <name><![CDATA[Beatrobo, Inc.]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SECCON 2015 Online CTF Writeup]]></title>
+    <link href="http://tech.beatrobo.com/blog/2015/12/06/seccon-2015-online-ctf-writeup/"/>
+    <updated>2015-12-06T23:44:04+09:00</updated>
+    <id>http://tech.beatrobo.com/blog/2015/12/06/seccon-2015-online-ctf-writeup</id>
+    <content type="html"><![CDATA[<p>SECCON 2015 Online CTF Writeup</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Beatroboハードウェアハッカソン#1 を開催しました]]></title>
