@@ -4,7 +4,7 @@
   <title><![CDATA[Playground]]></title>
   <link href="http://tech.beatrobo.com/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2015-12-07T05:14:29+09:00</updated>
+  <updated>2015-12-07T05:16:07+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
     <name><![CDATA[Beatrobo, Inc.]]></name>
@@ -311,6 +311,8 @@ counterhardware.zip</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
+<hr />
+
 <h1>感想</h1>
 
 <p>これ以外にもAndroidのAPKを初めて逆コンパイルするなどの体験ができたので非常に勉強になりました。組み込み系の問題があってちょっとびっくりしました。おもしろいですよね。</p>
@@ -327,6 +329,8 @@ counterhardware.zip</p>
 
 
 <p>が揃っていれば結構上位が目指せそうな気がするので、次回は複数人で参加しようかと思います。運営の方々どうもありがとうございました。</p>
+
+<p>&mdash;</p>
 
 <h1>最後に</h1>
 
