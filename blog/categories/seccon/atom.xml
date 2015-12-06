@@ -4,7 +4,7 @@
   <title><![CDATA[Category: SECCON | Playground]]></title>
   <link href="http://tech.beatrobo.com/blog/categories/seccon/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2015-12-07T05:07:33+09:00</updated>
+  <updated>2015-12-07T05:11:34+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
     <name><![CDATA[Beatrobo, Inc.]]></name>
@@ -52,7 +52,7 @@
 <!-- more -->
 
 
-<h2>解説の前に</h2>
+<h1>解説の前に</h1>
 
 <p>今回出題された問題は <a href="https://github.com/SECCON/SECCON2015_online_CTF">こちら</a>にすべて公開されています。</p>
 
@@ -61,16 +61,16 @@
 
 <p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/raspberrypi/gpio-numbers-pi2.png"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/raspberrypi/gpio-numbers-pi2.png" width="600"/></a></p>
 
-<h2>Reverse-Engineering Hardware 1</h2>
+<h1>Reverse-Engineering Hardware 1</h1>
 
-<h3>設問</h3>
+<h2>設問</h2>
 
 <p>私たちはデコーダーボードの写真と、すてきなテキストを生成するプログラムを入手した。<br/>
 解読のお手伝いをしてくれない？<br/>
 gpio.py<br/>
 ChristmasIllumiations.zip</p>
 
-<h3>提供されたもの</h3>
+<h2>提供されたもの</h2>
 
 <ul>
 <li>RaspberryPi上で動作するPythonのコード（プログラム中にGPIOを使っているので、実環境がないと動作しない）</li>
@@ -81,7 +81,7 @@ ChristmasIllumiations.zip</p>
 
 <p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-1/ChristmasIllumiations/DSC_0125.jpg"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-1/ChristmasIllumiations/DSC_0125.jpg" width="600"/></a></p>
 
-<h3>手順</h3>
+<h2>手順</h2>
 
 <p>上にあるデコーダーボード画像に写っているLEDのうち、ブレッドボード上部に刺さっている6個のLEDを左からL1からL6と、L6の下にあるLEDをL7と命名。</p>
 
@@ -173,9 +173,9 @@ The flag is SECCON{###FD80UY#!8880UY#!8}
 
 <hr />
 
-<h2>Reverse-Engineering Hardware 2</h2>
+<h1>Reverse-Engineering Hardware 2</h1>
 
-<h3>設問</h3>
+<h2>設問</h2>
 
 <p>我々は2つの74HC161を使ったエンコーダーボードによるバイナリを入手した。
 復元を手伝ってほしい。<br/>
@@ -183,7 +183,7 @@ gpio2.py<br/>
 encripted<br/>
 counterhardware.zip</p>
 
-<h3>提供されたもの</h3>
+<h2>提供されたもの</h2>
 
 <ul>
 <li>RaspberryPi上で動作するPythonのコード（プログラム中にGPIOを使っているので、実環境がないと動作しない）</li>
@@ -194,7 +194,7 @@ counterhardware.zip</p>
 
 <p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-2/counterhardware/DSC_0003.jpg"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-2/counterhardware/DSC_0003.jpg" width="600"/></a></p>
 
-<h3>手順</h3>
+<h2>手順</h2>
 
 <p>ブレッドボード上に74HC161という<a href="http://toshiba.semicon-storage.com/info/lookup.jsp?pid=TC74HC161AP&amp;lang=ja">4bitのバイナリーカウンター</a>が2つ載っています。74HC161はCLKが入るとカウンターが+1されるものです。</p>
 
@@ -267,7 +267,7 @@ $ cat output
 The flag is SECCON{7xgxUbQYixmiJAvtniHF}.
 </code></p>
 
-<h2>感想</h2>
+<h1>感想</h1>
 
 <p>これ以外にもAndroidのAPKを初めて逆コンパイルするなどの体験ができたので非常に勉強になりました。組み込み系の問題があってちょっとびっくりしました。おもしろいですよね。</p>
 
@@ -284,7 +284,7 @@ The flag is SECCON{7xgxUbQYixmiJAvtniHF}.
 
 <p>が揃っていれば結構上位が目指せそうな気がするので、次回は複数人で参加しようかと思います。運営の方々どうもありがとうございました。</p>
 
-<h2>最後に</h2>
+<h1>最後に</h1>
 
 <p>こんなセキュリティとハードウェアが好きなアルバイトや社員を募集しております！<a href="mailto:jobs@beatrobo.com">jobs@beatrobo.com</a>にご連絡ください。</p>
 
