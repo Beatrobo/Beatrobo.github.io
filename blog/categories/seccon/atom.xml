@@ -4,7 +4,7 @@
   <title><![CDATA[Category: SECCON | Playground]]></title>
   <link href="http://tech.beatrobo.com/blog/categories/seccon/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2015-12-07T04:09:35+09:00</updated>
+  <updated>2015-12-07T04:57:48+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
     <name><![CDATA[Beatrobo, Inc.]]></name>
@@ -22,11 +22,13 @@
 
 <p></p>
 
+<p><a herf=""><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/seccon.jpg" width="600" /></a></p>
+
 <p>お久しぶりです。Beatrobo竹井です。</p>
 
 <p>12/5 15:00 〜 12/6 15:00 に開催された <a href="http://score.quals.seccon.jp/announcement/">SECCON 2015 Online CTF</a> の参加レポートと正解できたチャレンジの解法の解説をお送りします。</p>
 
-<p>今回初参加で、MITMというチーム名で私ひとり単身でのチャレンジ。まったく予習をしていなかったのでQRコードやパケット解析はほぼわからず、結局900点の202位で終了となりました。</p>
+<p>今回初参加で、MITMというチーム名で私ひとりでのチャレンジ。まったく予習をしていなかったのでQRコードやパケット解析はほぼわからず、結局900点の202位で終了となりました。</p>
 
 <p>時間内に解けた問題は以下。</p>
 
@@ -43,7 +45,7 @@
 
 <p>締め切り終了10分後に"Reverse-Engineering Hardware 2 (500)&ldquo;の答えがわかってしまい、1日目にぐっすり寝たのを後悔。</p>
 
-<p>ということで今回は、私の得意分野であるハードウェア系の問題 &ldquo;Reverse-Engineering Hardware 1&amp;2&rdquo; の詳細な解説をしていきます。</p>
+<p>弊社では<a href="https://www.plugair.com">PlugAir</a>というハードウェアな認証キーを作っておりハードウェア周りが得意なので、ハードウェア系の問題 &ldquo;Reverse-Engineering Hardware 1&amp;2&rdquo; の詳細な解説をしていきます。</p>
 
 <p>コードは <a href="https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup">https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup</a> に実行可能な状態で置いています。</p>
 
@@ -91,7 +93,7 @@ ChristmasIllumiations.zip</p>
 
 <p>この適当な回路図ではL1とL2が下のほうに描かれていますが、紙面の関係上下に分けて書いただけで、L1〜L6は横一列に並んでいます。</p>
 
-<p>LED周辺の回路は基本的に、2つのダイオードでORを作り、その出力にLEDとプルアップ抵抗を繋いでいます。所々にGPIOの入力ピンも接続されており負論理となっています（LEDは正論理で、ONだと点灯)。図で表すと以下の様な感じ。</p>
+<p>LED周辺の回路は基本的に、<a href="http://markun.cs.shinshu-u.ac.jp/learn/lcirc/lcirc2/lcirc2-3.html">2つのダイオードでORを作り</a>、その出力にLEDとプルアップ抵抗を繋いでいます。所々にGPIOの入力ピンも接続されており負論理となっています（LEDは正論理で、ONだと点灯)。図で表すと以下の様な感じ。</p>
 
 <p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-1/nor.jpg"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-1/nor.jpg" width="400"/></a></p>
 
@@ -123,7 +125,7 @@ ChristmasIllumiations.zip</p>
 <p>そして愚直に実装したコードがこちらです。
 <a href="https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup/blob/master/Reverse-Engineering-Hardware-1/gpio_sim.py">https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup/blob/master/Reverse-Engineering-Hardware-1/gpio_sim.py</a></p>
 
-<p>gpio.pyからの主な変更点は</p>
+<p><code>gpio.py</code> からの主な変更点は</p>
 
 <ul>
 <li>DA, DBが変更する時やFFのQの値が変わるタイミングでLEDの状態を更新する<code>update_led()</code>を実行</li>
@@ -132,7 +134,7 @@ ChristmasIllumiations.zip</p>
 </ul>
 
 
-<p>```
+<p>```python
 def encoder():</p>
 
 <pre><code>v = 0
@@ -167,6 +169,123 @@ return v
 $ ./gpio_sim.py
 The flag is SECCON{###FD80UY#!8880UY#!8}
 </code></p>
+
+<hr />
+
+<h2>Reverse-Engineering Hardware 2</h2>
+
+<h3>設問</h3>
+
+<p>我々は2つの74HC161を使ったエンコーダーボードによるバイナリを入手した。
+復元を手伝ってほしい。<br/>
+gpio2.py<br/>
+encripted<br/>
+counterhardware.zip</p>
+
+<h3>提供されたもの</h3>
+
+<ul>
+<li>RaspberryPi上で動作するPythonのコード（プログラム中にGPIOを使っているので、実環境がないと動作しない）</li>
+<li>LEDがチカチカする動作ムービー</li>
+<li>回路構成を類推するための多数のエンコーダーボード画像（以下のような画像が30枚ほど）</li>
+</ul>
+
+
+<p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-2/counterhardware/DSC_0003.jpg"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-2/counterhardware/DSC_0003.jpg" width="600"/></a></p>
+
+<h3>手順</h3>
+
+<p>ブレッドボード上に74HC161という<a href="http://toshiba.semicon-storage.com/info/lookup.jsp?pid=TC74HC161AP&amp;lang=ja">4bitのバイナリーカウンター</a>が2つ載っています。74HC161はCLKが入るとカウンターが+1されるものです。</p>
+
+<p>そして、Pythonのコードを眺めているとP系の出力は一切動いていないのと、データはXORでエンコードされているのでもう一度同じ操作をすればデコードできることがわかりました。</p>
+
+<p>そして多数の画像から回路図をおこしてみたのが以下（GPIOのピンが変な配置になってますが気にせず…）</p>
+
+<p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-2/circuit.jpg"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-2/circuit.jpg" width="600"/></a></p>
+
+<p>動画はあまり参考にならず、とりあえずこの回路図通りにPythonのコードにバイナリカウンタの部分を追加で実装してみました。</p>
+
+<p><a href="https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup/blob/master/Reverse-Engineering-Hardware-2/gpio2_sim.py">https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup/blob/master/Reverse-Engineering-Hardware-2/gpio2_sim.py</a></p>
+
+<p><code>gpio2.py</code>からの変更点としては</p>
+
+<ul>
+<li><code>pulse(clock)</code> でクロックを入ってくるところを <code>count_up()</code>に変更。クロックが1つ入るとカウンタが1つ進む
+
+<ul>
+<li><code>count_up()</code> は、バイナリカウンタ2つをそのまま実装。1つめのカウンタのCO（キャリーオーバー）が2つめのカウンタのCLKになっている。COがHighとなる条件は全部のQがHighの時</li>
+</ul>
+</li>
+<li>バイナリカウンタの出力Qの状態を変数化(q0〜q7)</li>
+<li>lenには入力ファイルのバイト数が自動で入るように</li>
+</ul>
+
+
+<p>```python
+def get_current_count_a():</p>
+
+<pre><code>return q2*8 + q1*4 + q0*2 + q7
+</code></pre>
+
+<p>def get_current_count_b():</p>
+
+<pre><code>return q6*8 + q5*4 + q4*2 + q3
+</code></pre>
+
+<p>def count_up():</p>
+
+<pre><code>global q0, q1, q2, q3, q4, q5, q6, q7
+da = get_current_count_a()
+dan = da + 1
+q7 = 0x01 &amp; dan
+q0 = 0x01 &amp; (dan&gt;&gt;1)
+q1 = 0x01 &amp; (dan&gt;&gt;2)
+q2 = 0x01 &amp; (dan&gt;&gt;3)
+
+if q7 == 1 and q0 == 1 and q1 == 1 and q2 == 1:
+    db = get_current_count_b()
+    dbn = db + 1
+    q3 = 0x01 &amp; dbn
+    q4 = 0x01 &amp; (dbn&gt;&gt;1)
+    q5 = 0x01 &amp; (dbn&gt;&gt;2)
+    q6 = 0x01 &amp; (dbn&gt;&gt;3)
+</code></pre>
+
+<p>```</p>
+
+<p>このスクリプトを実行しても、出てくるのはテキストファイルではないバイナリでした。
+ためしに HexEditでバイナリの中身を確認すると、やっぱりよくわかりません。</p>
+
+<p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-2/binary_output.jpg"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-2/binary_output.jpg" width="600"/></a></p>
+
+<p>とりあえず頭の <code>1F 8B 08</code> でググってみると、gzip形式らしいとのことがわかったので、gunzipで解凍するとflagが書かれているテキストファイルが出てきました！</p>
+
+<p><code>
+$ gunzip output
+$ cat output
+The flag is SECCON{7xgxUbQYixmiJAvtniHF}.
+</code></p>
+
+<h2>感想</h2>
+
+<p>これ以外にもAndroidのAPKを初めて逆コンパイルするなどの体験ができたので非常に勉強になりました。組み込み系の問題があってちょっとびっくりしました。おもしろいですよね。</p>
+
+<p>問題の傾向として、</p>
+
+<ul>
+<li>QRの人（QRの問題数多い印象）</li>
+<li>パケット解析の人</li>
+<li>Cryptoな人</li>
+<li>画像（バイナリアン）な人</li>
+<li>ハードウェアな人</li>
+</ul>
+
+
+<p>が揃っていれば結構上位が目指せそうな気がするので、次回は複数人で参加しようかと思います。運営の方々どうもありがとうございました。</p>
+
+<h2>最後に</h2>
+
+<p>こんなセキュリティとハードウェアが好きなアルバイトや社員を募集しております！<a href="jobs@beatrobo.com">jobs@beatrobo.com</a>にどしどしご応募を！代々木でお待ちしております！</p>
 ]]></content>
   </entry>
   

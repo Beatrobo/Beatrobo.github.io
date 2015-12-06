@@ -4,7 +4,7 @@
   <title><![CDATA[Category: hubot | Playground]]></title>
   <link href="http://tech.beatrobo.com/blog/categories/hubot/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2015-12-07T04:09:35+09:00</updated>
+  <updated>2015-12-07T04:57:48+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
     <name><![CDATA[Beatrobo, Inc.]]></name>
@@ -204,7 +204,7 @@ $ npm install --save hubot-hipchat
 </span><span class='line'>
 </span><span class='line'>&lt;p&gt;export <span class="nv">HUBOT_HIPCHAT_JID</span><span class="o">=</span>&amp;ldquo;01234_56789@chat.hipchat.com&amp;rdquo;
 </span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_HIPCHAT_PASSWORD</span><span class="o">=</span>&amp;ldquo;passworddayo&amp;rdquo;
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_HIPCHAT_ROOMS</span><span class="o">=</span>&amp;ldquo;01234_&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;&amp;#x6d;&amp;#x61;&amp;#x69;&amp;#x6c;&amp;#116;&amp;#111;&amp;#x3a;&amp;#97;&amp;#110;&amp;#100;&amp;#114;&amp;#111;&amp;#x69;&amp;#100;&amp;#64;&amp;#99;&amp;#x6f;&amp;#110;&amp;#102;&amp;#46;&amp;#x68;&amp;#x69;&amp;#x70;&amp;#x63;&amp;#104;&amp;#97;&amp;#x74;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#109;&quot;</span>&gt;&amp;#x61;&amp;#x6e;&amp;#x64;&amp;#114;&amp;#x6f;&amp;#x69;&amp;#x64;&amp;#x40;&amp;#x63;&amp;#x6f;&amp;#110;&amp;#102;&amp;#46;&amp;#104;&amp;#105;&amp;#112;&amp;#x63;&amp;#104;&amp;#97;&amp;#116;&amp;#x2e;&amp;#x63;&amp;#x6f;&amp;#x6d;&lt;/a&gt;&amp;rdquo; <span class="c"># ROOM JID&lt;/p&gt;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_HIPCHAT_ROOMS</span><span class="o">=</span>&amp;ldquo;01234_&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;&amp;#109;&amp;#x61;&amp;#105;&amp;#108;&amp;#116;&amp;#111;&amp;#x3a;&amp;#x61;&amp;#110;&amp;#100;&amp;#x72;&amp;#x6f;&amp;#x69;&amp;#100;&amp;#x40;&amp;#99;&amp;#111;&amp;#110;&amp;#102;&amp;#46;&amp;#104;&amp;#105;&amp;#x70;&amp;#99;&amp;#104;&amp;#x61;&amp;#116;&amp;#46;&amp;#x63;&amp;#111;&amp;#x6d;&quot;</span>&gt;&amp;#97;&amp;#x6e;&amp;#100;&amp;#114;&amp;#x6f;&amp;#105;&amp;#100;&amp;#64;&amp;#99;&amp;#111;&amp;#110;&amp;#x66;&amp;#x2e;&amp;#104;&amp;#105;&amp;#x70;&amp;#99;&amp;#104;&amp;#x61;&amp;#116;&amp;#46;&amp;#x63;&amp;#111;&amp;#109;&lt;/a&gt;&amp;rdquo; <span class="c"># ROOM JID&lt;/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'>&lt;p&gt;bin/hubot &amp;mdash;adapter hipchat
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
