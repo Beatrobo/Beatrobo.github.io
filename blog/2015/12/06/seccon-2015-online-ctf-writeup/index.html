@@ -130,9 +130,9 @@
 </ul>
 
 
-<p>締め切り終了10分後に&#8221;Reverse-Engineering Hardware 2 (500)&ldquo;の答えがわかってしまい、1日目にぐっすり寝たのを後悔。</p>
+<p>締め切りの10分後に&#8221;Reverse-Engineering Hardware 2 (500)&ldquo;の答えがわかってしまい、1日目にぐっすり寝たのを後悔。</p>
 
-<p>弊社では<a href="https://www.plugair.com">PlugAir</a>というハードウェアな認証キーを作っておりハードウェア周りが得意なので、ハードウェア系の問題 &ldquo;Reverse-Engineering Hardware 1&amp;2&rdquo; の詳細な解説をしていきます。</p>
+<p>弊社では<a href="https://www.plugair.com">PlugAir</a>というハードウェアな認証キーを作っておりハードウェア周りが得意なので、ハードウェア系の問題 &ldquo;Reverse-Engineering Hardware 1&amp;2&rdquo; の詳細な解説をしていきます。ハードウェアのリバースエンジニアリング系の問題は、配点が高い割に回路構成さえ把握できれば特に悩むところがない問題ばかりだったのでオススメです。</p>
 
 <p>コードは <a href="https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup">https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup</a> に実行可能な状態で置いています。</p>
 
@@ -383,11 +383,11 @@ counterhardware.zip</p>
 
 
 <p>このスクリプトを実行しても、出てくるのはテキストファイルではないバイナリでした。
-ためしに HexEditでバイナリの中身を確認すると、やっぱりよくわかりません。</p>
+ためしに HexEditでバイナリの中身を確認しても、やっぱりよくわかりません。</p>
 
 <p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-2/binary_output.jpg"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-2/binary_output.jpg" width="600"/></a></p>
 
-<p>とりあえず頭の <code>1F 8B 08</code> でググってみると、gzip形式らしいとのことがわかったので、gunzipで解凍するとflagが書かれているテキストファイルが出てきました！</p>
+<p>とりあえず頭の <code>1F 8B 08</code> でググってみると、gzip形式らしいとのことがわかったのでgunzipで解凍。すると、flagが書かれているテキストファイルが出てきました！</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
