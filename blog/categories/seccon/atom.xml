@@ -4,7 +4,7 @@
   <title><![CDATA[Category: SECCON | Playground]]></title>
   <link href="http://tech.beatrobo.com/blog/categories/seccon/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2015-12-07T14:16:06+09:00</updated>
+  <updated>2015-12-07T14:36:09+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
     <name><![CDATA[Beatrobo, Inc.]]></name>
@@ -18,11 +18,7 @@
     <link href="http://tech.beatrobo.com/blog/2015/12/06/seccon-2015-online-ctf-writeup/"/>
     <updated>2015-12-06T23:44:04+09:00</updated>
     <id>http://tech.beatrobo.com/blog/2015/12/06/seccon-2015-online-ctf-writeup</id>
-    <content type="html"><![CDATA[
-
-<p></p>
-
-<p><a herf=""><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/seccon.jpg" width="600" /></a></p>
+    <content type="html"><![CDATA[<p><a herf=""><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/seccon.jpg" width="600" /></a></p>
 
 <p>お久しぶりです。Beatrobo竹井です。</p>
 
