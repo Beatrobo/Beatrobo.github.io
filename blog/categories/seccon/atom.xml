@@ -4,7 +4,7 @@
   <title><![CDATA[Category: SECCON | Playground]]></title>
   <link href="http://tech.beatrobo.com/blog/categories/seccon/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2015-12-07T14:36:09+09:00</updated>
+  <updated>2015-12-07T18:23:14+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
     <name><![CDATA[Beatrobo, Inc.]]></name>
@@ -41,7 +41,9 @@
 
 <p>締め切りの10分後に"Reverse-Engineering Hardware 2 (500)&ldquo;の答えがわかってしまい、1日目にぐっすり寝たのを後悔。</p>
 
-<p>弊社では<a href="https://www.plugair.com">PlugAir</a>というハードウェアな認証キーを作っておりハードウェア周りが得意なので、ハードウェア系の問題 &ldquo;Reverse-Engineering Hardware 1&amp;2&rdquo; の詳細な解説をしていきます。ハードウェアのリバースエンジニアリング系の問題は、配点が高い割に回路構成さえ把握できれば特に悩むところがない問題ばかりだったのでオススメです。</p>
+<p>弊社では<a href="https://www.plugair.com">PlugAir</a>というハードウェアな認証キーを作っておりハードウェア周りが得意なので、ハードウェア系の問題 &ldquo;Reverse-Engineering Hardware 1&amp;2&rdquo; の詳細な解説をしていきます。</p>
+
+<p>ハードウェアのリバースエンジニアリング系の問題は、配点が高い割に回路構成さえ把握できれば悩むところがあまりない問題ばかりだったのでオススメです。</p>
 
 <p>コードは <a href="https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup">https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup</a> に実行可能な状態で置いています。</p>
 
@@ -209,7 +211,7 @@ counterhardware.zip</p>
 <p><code>gpio2.py</code>からの変更点としては</p>
 
 <ul>
-<li><code>pulse(clock)</code> でクロックを入ってくるところを <code>count_up()</code>に変更。クロックが1つ入るとカウンタが1つ進む
+<li><code>pulse(clock)</code> を <code>count_up()</code>に変更。カウンタがクロックで叩かれると1つ進むハードの構造をプログラムした
 
 <ul>
 <li><code>count_up()</code> は、バイナリカウンタ2つをそのまま実装。1つめのカウンタのCO（キャリーオーバー）が2つめのカウンタのCLKになっている。COがHighとなる条件は全部のQがHighの時</li>
@@ -253,7 +255,7 @@ if q7 == 1 and q0 == 1 and q1 == 1 and q2 == 1:
 <p>```</p>
 
 <p>このスクリプトを実行しても、出てくるのはテキストファイルではないバイナリでした。
-ためしに HexEditでバイナリの中身を確認しても、やっぱりよくわかりません。</p>
+試しにHexEditでバイナリの中身を確認しても、やっぱりよくわかりません。</p>
 
 <p><a href="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-2/binary_output.jpg"><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/Reverse-Engineering-Hardware-2/binary_output.jpg" width="600"/></a></p>
 
@@ -274,7 +276,7 @@ The flag is SECCON{7xgxUbQYixmiJAvtniHF}.
 <p>問題の傾向として、</p>
 
 <ul>
-<li>QRの人（QRの問題数多い印象）</li>
+<li>QRコードの人（QRコードの問題数多い印象）</li>
 <li>パケット解析の人</li>
 <li>Cryptoな人</li>
 <li>画像（バイナリアン）な人</li>
