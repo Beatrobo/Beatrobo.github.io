@@ -84,7 +84,7 @@ Beatrobo竹井です。 この記事は Bluetooth Low Energy Advent Calendar 201
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/">Web Bluetooth API で Heart Rate Service の BLE デバイスにブラウザから接続する</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/">Web Bluetooth API で BLE デバイスにブラウザから接続する</a></h1>
     
     
       <p class="meta">
@@ -120,9 +120,9 @@ Beatrobo竹井です。</p>
 
 <p>以前開発していた <a href="https://github.com/YUKAI/konashi-js-sdk">konashi-js-sdk</a> では、ブラウザ上の JS で BLE デバイスとコミュニケーションできるようにするため、BLE と通信する Native 側とブラウザ内の JS とが双方向にコミュニケーションできるカスタム WebView を作り、それを konashi.js アプリの中に埋め込んでいました。</p>
 
-<p>それが Web Bluetooth API だと、アプリのインストールはいらなくなり、普通のブラウザで konashi.js 相当のことができるようになります。</p>
+<p>それが Web Bluetooth API だとアプリのインストールはいらなくなり、普通のブラウザで konashi.js 相当のことができるようになります。</p>
 
-<p>今回は、Web Bluetooth API の現状を整理しつつ、Web Bluetooth API を使った Heart Rate Service デバイスの情報を表示するページを試しに作って見ようと思います。</p>
+<p>今回は、Web Bluetooth API の現状を整理しつつ、Web Bluetooth API を使った Proximity Profile を持ったデバイスとコミュニケーションするページを試しに作って見ようと思います。</p>
 
 <p>コードは <a href="https://github.com/hideyuki/heart-rate-service-with-web-bluetooth-api">https://github.com/hideyuki/heart-rate-service-with-web-bluetooth-api</a> に実行可能な状態で置いています。</p>
 
@@ -343,7 +343,7 @@ Beatrobo竹井です。</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/">Web Bluetooth API で Heart Rate Service の BLE デバイスにブラウザから接続する</a>
+        <a href="/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/">Web Bluetooth API で BLE デバイスにブラウザから接続する</a>
       </li>
     
       <li class="post">
