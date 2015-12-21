@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ble | Playground]]></title>
   <link href="http://tech.beatrobo.com/blog/categories/ble/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2015-12-21T21:13:07+09:00</updated>
+  <updated>2015-12-22T03:23:33+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
     <name><![CDATA[Beatrobo, Inc.]]></name>
@@ -27,13 +27,13 @@ Beatrobo竹井です。</p>
 
 <p>この Web Bluetooth API を利用すれば、ブラウザだけで Web サービスと BLE デバイスとがコミュニケーションできるようになるというわけです。</p>
 
-<p>以前開発していた <a href="https://github.com/YUKAI/konashi-js-sdk">konashi-js-sdk</a> では、ブラウザ上の JS で BLE デバイスとコミュニケーションできるようにするため、BLE と通信する Native 側とブラウザ内の JS とが双方向にコミュニケーションできるカスタム WebView を作り、それを konashi.js アプリの中に埋め込んでいました。</p>
+<p>以前開発していた <a href="https://github.com/YUKAI/konashi-js-sdk">konashi-js-sdk</a> では、ブラウザ上の JS で BLE デバイスとコミュニケーションを実現するため、BLE と通信する Native 側とブラウザ内の JS とが双方向にコミュニケーションできるカスタム WebView を作り、それを konashi.js アプリの中に埋め込んでいました。</p>
 
-<p>それが Web Bluetooth API だとアプリのインストールはいらなくなり、普通のブラウザで konashi.js 相当のことができるようになります。</p>
+<p>それが Web Bluetooth API だと特別なアプリのインストールいらずで、普通のブラウザ上で konashi.js 相当のことができるようになります。</p>
 
-<p>今回は、Web Bluetooth API の現状を整理しつつ、Web Bluetooth API を使った Proximity Profile を持ったデバイスとコミュニケーションするページを試しに作って見ようと思います。</p>
+<p>今回は、Web Bluetooth API の現状を整理しつつ、Web Bluetooth API を使って Proximity Profile デバイスとコミュニケーションする JS を作って見ようと思います。</p>
 
-<p>コードは <a href="https://github.com/hideyuki/heart-rate-service-with-web-bluetooth-api">https://github.com/hideyuki/heart-rate-service-with-web-bluetooth-api</a> に実行可能な状態で置いています。</p>
+<p>コードは <a href="https://github.com/hideyuki/proximity-profile-with-web-bluetooth-api">https://github.com/hideyuki/proximity-profile-with-web-bluetooth-api</a> に実行可能な状態で置いています。</p>
 
 <!-- more -->
 
@@ -46,11 +46,13 @@ Beatrobo竹井です。</p>
 
 <ul>
 <li><a href="https://www.w3.org/community/web-bluetooth/">Web Bluetooth Community Group</a></li>
-<li><a href="https://github.com/webbluetoothcg/web-bluetooth/">WebBluetoothCG/web-bluetooth</a></li>
+<li><a href="https://github.com/webbluetoothcg/web-bluetooth/">GitHub: WebBluetoothCG/web-bluetooth</a></li>
 </ul>
 
 
 <p>そして Web Bluetooth API の実装状況は<a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/gh-pages/implementation-status.md">こちら</a>。全体的には、やっと実装が始まってる &amp; 実装すら始まっていないという感じです。</p>
+
+<p>主要なブラウザの対応状況を見ていきましょう。</p>
 
 <h3>Chrome</h3>
 
@@ -76,31 +78,182 @@ Beatrobo竹井です。</p>
 
 <p>現在の <a href="https://play.google.com/store/apps/details?id=com.chrome.dev&amp;hl=ja">Android Chrome の Dev版</a> のバージョンは 49 です。</p>
 
-<p>v48 だと <code>characteristicvaluechanged</code> イベントが発火しないようなのですが、はたして v49 だとどうでしょう。</p>
+<p>v48 だと <code>characteristicvaluechanged</code> イベントが発火しないようなのですが、v49 でも発火せず Notify はまだ使えない。残念。ということで今回は Read/Write ができるChracteristics を持つ Service を触っていきましょう。</p>
 
-<p>Chrome で Web Bluetooth API を有効にするには、以下の</p>
+<p>Chrome で Web Bluetooth API を有効にするには、以下のフラグページで Web Bluetooth API を有効にする必要があります。</p>
 
 <p><code>
 chrome://flags/#enable-web-bluetooth
 </code></p>
 
-<p>BLE デバイスをお持ちでない方は、Androidアプリの <a href="https://play.google.com/store/apps/details?id=io.github.webbluetoothcg.bletestperipheral&amp;hl=ja">BLE Peripheral Simulator</a> か、iOSアプリの <a href="https://itunes.apple.com/jp/app/lightblue-explorer-bluetooth/id557428110?mt=8">LightBlue Explorer</a> をもう一台のスマホで使うことで、スマホ自体が仮想BLEデバイスとして振る舞ってくれるのでオススメです。</p>
+<p><a href="https://raw.githubusercontent.com/hideyuki/proximity-profile-with-web-bluetooth-api/master/images/enable-web-bluetooth-api.jpg"><img src="https://raw.githubusercontent.com/hideyuki/proximity-profile-with-web-bluetooth-api/master/images/enable-web-bluetooth-api.jpg" width="400"/></a></p>
 
-<h3>Proximity Profile</h3>
+<p>BLE デバイスをお持ちでない方は、Androidアプリの <a href="https://play.google.com/store/apps/details?id=io.github.webbluetoothcg.bletestperipheral&amp;hl=ja">BLE Peripheral Simulator</a> か、iOSアプリの <a href="https://itunes.apple.com/jp/app/lightblue-explorer-bluetooth/id557428110?mt=8">LightBlue Explorer</a> をもう一台のスマホにインストールすることで、スマホ自体が仮想BLEデバイス (Peripheral) として振る舞ってくれるのでオススメです。</p>
+
+<h2>Proximity デバイスと通信！</h2>
+
+<p>今回は私の開発用iPhoneに <a href="https://itunes.apple.com/jp/app/lightblue-explorer-bluetooth/id557428110?mt=8">LightBlue Explorer</a> をインストールし、仮想 Proximity デバイスを作って Android Chrome Dev の Web Bluetooth API を使って通信させてみます。</p>
+
+<p>本題に入る前に、Proximity Profile の整理をさくっと。</p>
+
+<p>(余談ですが、Profile や Service の詳細を調べたいときは、developer.bluetooth.org の <a href="https://developer.bluetooth.org/gatt/profiles/Pages/ProfilesHome.aspx">GATT Specifications > Profiles</a> や、<a href="https://developer.bluetooth.org/gatt/services/Pages/ServicesHome.aspx">GATT Specifications > Services</a> を見ると一目瞭然です！)</p>
+
+<h3>Proximity Profile (PXP)</h3>
 
 <p><a href="https://developer.bluetooth.org/gatt/profiles/Pages/ProfileViewer.aspx?u=org.bluetooth.profile.proximity.xml">Bluetooth Developer Portal: GATT Specifications > Profiles > Proximity</a></p>
 
-<h4>Link Loss Service</h4>
+<p>Proximity Profile は「近接」という単語の通り、デバイスとの距離をベースにアラートを生成するプロファイルで、スマートフォンの置き忘れなどのアプリケーションを作成する時に搭載されるものです。</p>
+
+<p>この Proximity Profile には 以下の3つの Serices が定義されています。</p>
+
+<h4>Link Loss Service (org.bluetooth.service.link_loss)</h4>
 
 <p><a href="https://developer.bluetooth.org/gatt/services/Pages/ServiceViewer.aspx?u=org.bluetooth.service.link_loss.xml">Bluetooth Developer Portal: GATT Specifications > Services > Link Loss</a></p>
 
-<h4>Immediate Alert Service</h4>
+<p>接続が切れた時にアラートを鳴らすかの設定を行う Service です。Read/Write 可能な <code>alert_level</code> という Characteristic を持っています。</p>
+
+<h4>Immediate Alert Service (org.bluetooth.service.immediate_alert)</h4>
 
 <p><a href="https://developer.bluetooth.org/gatt/services/Pages/ServiceViewer.aspx?u=org.bluetooth.service.immediate_alert.xml">Bluetooth Developer Portal: GATT Specifications > Services > Immediate Alert</a></p>
 
-<h4>Tx Power Service</h4>
+<p>すぐさまアラートを鳴らせる Service です。WriteWithoutResponse のみ可能な <code>alert_level</code> という Characteristic を持っています。</p>
+
+<h4>Tx Power Service (org.bluetooth.service.tx_power)</h4>
 
 <p><a href="https://developer.bluetooth.org/gatt/services/Pages/ServiceViewer.aspx?u=org.bluetooth.service.tx_power.xml">Bluetooth Developer Portal: GATT Specifications > Services > Tx Power</a></p>
+
+<p>BLE の送信パワーを読める Service です。Read のみ可能な <code>tx_power_level</code> という Characteristic を持っています。</p>
+
+<p>あとはセントラル側のコードをかけば通信できそうです。</p>
+
+<h2>ブラウザ(BLEのセントラル)側のコード例</h2>
+
+<p>BLE のセントラル側の一般的な処理の流れは以下です（ペアリングはややこしいので省きます）。</p>
+
+<ul>
+<li>① デバイスのスキャン</li>
+<li>② デバイスに接続</li>
+<li>③ デバイスの Services 情報を取得</li>
+<li>④ ③で得た Services の Characteristics 情報を取得</li>
+<li>⑤ Characteristics を操作する</li>
+</ul>
+
+
+<p>現状の Web Bluetooth API はこれ以上のことはできなさそうなので、今回はこの①〜⑤を実装してみましょう。</p>
+
+<p>以下、コードです。ES6ですのでご注意を。</p>
+
+<p>```js
+// ① デバイスのスキャン
+navigator.bluetooth.requestDevice({
+  filters: [{</p>
+
+<pre><code>services: [
+  'link_loss',
+  'immediate_alert',
+  'tx_power'
+]
+</code></pre>
+
+<p>  }]
+})
+  .then(device =>{</p>
+
+<pre><code>// ② デバイス見つかったので、接続する
+return device.connectGATT();
+</code></pre>
+
+<p>  })
+  .then(server =>{</p>
+
+<pre><code>// ③ デバイスに接続できたので、そのデバイスのServiceを調べる
+return Promise.all([
+  server.getPrimaryService('link_loss'),
+  server.getPrimaryService('immediate_alert'),
+  server.getPrimaryService('tx_power')
+]);
+</code></pre>
+
+<p>  })
+  .then(services =>{</p>
+
+<pre><code>// ④ Serviceを全部調べたので、次はサービスに紐づくCharacteristicsを調べる
+return Promise.all([
+  services[0].getCharacteristic('alert_level'),
+  services[1].getCharacteristic('alert_level'),
+  services[2].getCharacteristic('tx_power_level')
+]);
+</code></pre>
+
+<p>  })
+  // Discovered characteristics
+  .then(characteristics =>{</p>
+
+<pre><code>// ⑤ 全部の Chracteristics をゲット
+// あとはその Characteristics を Read/Writeしていく
+</code></pre>
+
+<p>  })
+  .catch(error =>{</p>
+
+<pre><code>// エラー時はここにくる
+console.log(error);
+</code></pre>
+
+<p>  });
+```</p>
+
+<p><code>.then (Promises)</code> や <code>=&gt;</code> などは　ES6 (ES2015) で新しく定義されている文法です。 ES6 に関しては <a href="https://babeljs.io/docs/learn-es2015/">Learn ES2015</a> がわかりやすいです。</p>
+
+<p>注意点としては、https 上でしか Web Bluetooth API が動作しないようですので、オレオレ証明書を作ってローカルサーバでも https ができるようにしておくのが良いでしょう。</p>
+
+<h3>デモ</h3>
+
+<p>このような Proximity の Services/Characteristics を表示する JS/HTML を作成してみました。</p>
+
+<p><a href="https://proximity-web-bluetooth-api.herokuapp.com/">https://proximity-web-bluetooth-api.herokuapp.com/</a></p>
+
+<p><a href="https://raw.githubusercontent.com/hideyuki/proximity-profile-with-web-bluetooth-api/master/images/app_screen.jpg"><img src="https://raw.githubusercontent.com/hideyuki/proximity-profile-with-web-bluetooth-api/master/images/app_screen.jpg" width="300"/></a></p>
+
+<p>動作ムービーです。</p>
+
+<p><img src="https://github.com/hideyuki/proximity-profile-with-web-bluetooth-api/raw/master/images/play.gif" alt="" /></p>
+
+<p>Link Loss Service の <code>alert_level</code> の Read/Write はもちろんのこと、Proximity デバイス側から Link Loss Service の <code>alert_level</code> を書き換えてから、ブラウザから Read してもちゃんと反映されています。Characteristics の Read/Write は普通にできていますね。</p>
+
+<p>Immediate Alert Service の <code>alert_level</code> Characteristic は <code>WriteWithoutResponse</code> なのですが、<code>writeValue()</code> だとエラーが出てしまうので Immediate Alert Service は非表示にしています。</p>
+
+<h3>開発Tips</h3>
+
+<h4>Android Chrome のリモートデバッグ</h4>
+
+<p>現状の Web Bluetooth API だと、基本的には Android Chrome 上でした動作しないので、Android上で動作確認を行いながら開発を進めていくことになります。そんな時は、Android Chrome のリモートデバッグ機能を使うと、PCのChrome DevTools 上で Android の Chrome 上のページをデバッグできるようになり、とても楽です。</p>
+
+<p>リモートデバッグのやり方は <a href="https://developer.chrome.com/devtools/docs/remote-debugging">Remote Debugging on Android with Chrome</a> が詳しいです。</p>
+
+<h4>Mac から Android Chrome へのポートフォワード</h4>
+
+<p>リモートデバッグ関連ですが、Mac 上で動作しているサーバ（JS などを https でホストしている）に Android から簡単にアクセスさせるために方法としてポートフォワードがいい感じです。ポートフォワードなら、Mac の IP を調べたり、同じ LAN 内にいなくても開発が進めることができます。設定は Chrome の DevTools から可能です。</p>
+
+<p><a href="https://raw.githubusercontent.com/hideyuki/proximity-profile-with-web-bluetooth-api/master/images/remote_debug.jpg"><img src="https://raw.githubusercontent.com/hideyuki/proximity-profile-with-web-bluetooth-api/master/images/remote_debug.jpg" width="500"/></a></p>
+
+<h2>まだ不安定。だが期待はできる！</h2>
+
+<p>実装自体もまだ始まったばかりの Web Bluetooth API。とても不安定です。実際に開発している最中でも、同じデバイス名が2つ出てきたり、まったく接続できなくなったりします。その時はブラウザを再起動してやればまた正常に動きますのでご安心を。</p>
+
+<p>あと1年くらいすれば Android Chrome は落ち着きそうな感じ。あとは他のブラウザが追従してくるか…</p>
+
+<p>すでに、Chrome の Extension 領域では <a href="https://developer.chrome.com/apps/bluetooth">chrome.bluetooth</a> が利用可能ですので、OSX や Windows のChrome への実装もそう遠くない未来に実現するでしょう。</p>
+
+<p>ブラウザ上でハードウェアとコミュニケーションができる API があることによって、ハードウェアと連動するWebページなど、今までの Web をより拡張したものができるかもしれません。今後も引き続き BLE 情報はウォッチしつつ、何かおもしろいプロダクトが作れればと思います。</p>
+
+<h2>BLE 好きな方、遊びにおいで！</h2>
+
+<p><a href="http://tech.beatrobo.com/jobs">アルバイトや正社員のエンジニア募集中です！</a></p>
+
+<p>BLEが好きな方、ハードが好きな方。ぜひ弊社の代々木オフィスに遊びに来て語り合いましょう！</p>
+
+<p><a href="https://twitter.com/HideyukiTakei">@HideyukiTakei</a> もしくは、<a href="mailto:hide@beatrobo.com">hide@beatrobo.com</a> までご連絡頂ければ大歓迎いたします。</p>
 ]]></content>
   </entry>
   
