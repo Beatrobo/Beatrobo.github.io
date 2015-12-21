@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Playground, Tech Blog of Beatrobo, Inc.</title>
+  <title>Web Bluetooth API で Heart Rate Service の BLE デバイスにブラウザから接続する - Playground, Tech Blog of Beatrobo, Inc.</title>
   <meta name="author" content="Beatrobo, Inc.">
 
   
@@ -19,7 +19,7 @@ Beatrobo竹井です。 この記事は Bluetooth Low Energy Advent Calendar 201
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://tech.beatrobo.com">
+  <link rel="canonical" href="http://tech.beatrobo.com/blog/2015/12/20/proximity-profile-with-web-bluetooth-api">
   <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Playground, Tech Blog of Beatrobo, Inc." type="application/atom+xml">
@@ -76,15 +76,12 @@ Beatrobo竹井です。 この記事は Bluetooth Low Energy Advent Calendar 201
 </nav> -->
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/">Web Bluetooth API で Heart Rate Service の BLE デバイスにブラウザから接続する</a></h1>
+      <h1 class="entry-title">Web Bluetooth API で Heart Rate Service の BLE デバイスにブラウザから接続する</h1>
     
     
       <p class="meta">
@@ -102,14 +99,14 @@ Beatrobo竹井です。 この記事は Bluetooth Low Energy Advent Calendar 201
 
 <time datetime="2015-12-20T20:55:51+09:00" pubdate data-updated="true">Dec 20<span>th</span>, 2015</time>
         
-         | <a href="/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/#disqus_thread">Comments</a>
+         | <a href="#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>こんばんは。
+<div class="entry-content"><p>こんばんは。
 Beatrobo竹井です。</p>
 
 <p>この記事は <a href="http://qiita.com/advent-calendar/2015/ble">Bluetooth Low Energy Advent Calendar 2015</a> の20日目の記事です。</p>
@@ -126,195 +123,141 @@ Beatrobo竹井です。</p>
 
 <p>コードは <a href="https://github.com/hideyuki/heart-rate-service-with-web-bluetooth-api">https://github.com/hideyuki/heart-rate-service-with-web-bluetooth-api</a> に実行可能な状態で置いています。</p>
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/">続きを読む &rarr;</a>
-    </footer>
-  
+<!-- more -->
 
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/12/06/seccon-2015-online-ctf-writeup/">SECCON 2015 Online CTF Writeup</a></h1>
-    
-    
-      <p class="meta">
-        
+<h2>Web Bluetooth API の調査</h2>
 
+<p>現在、Web Bluetooth API は <a href="https://webbluetoothcg.github.io/web-bluetooth/">W3C に Draft として上がっています</a>。この Draft にはサンプルコードもたくさん記載されています。</p>
 
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-12-06T23:44:04+09:00" pubdate data-updated="true">Dec 6<span>th</span>, 2015</time>
-        
-         | <a href="/blog/2015/12/06/seccon-2015-online-ctf-writeup/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a herf=""><img src="https://raw.githubusercontent.com/hideyuki/SECCON-2015-Online-CTF-Writeup/master/seccon.jpg" width="600" /></a></p>
-
-<p>お久しぶりです。Beatrobo竹井です。</p>
-
-<p>12/5 15:00 〜 12/6 15:00 に開催された <a href="http://score.quals.seccon.jp/announcement/">SECCON 2015 Online CTF</a> の参加レポートと正解できたチャレンジの解法の解説をお送りします。</p>
-
-<p>今回初参加で、MITMというチーム名で私ひとりでのチャレンジ。まったく予習をしていなかったのでQRコードやパケット解析はほぼわからず、結局900点の202位で終了となりました。</p>
-
-<p>時間内に解けた問題は以下。</p>
+<p>また、最新情報などは以下から取得できます。</p>
 
 <ul>
-<li>Start SECCON CTF (50)</li>
-<li>SECCON WARS 2015 (100)</li>
-<li>Reverse-Engineering Android APK 1 (100)</li>
-<li>Reverse-Engineering Hardware 1 (400)</li>
-<li>Connect the server (100)</li>
-<li>Command-Line Quiz (100)</li>
-<li>Last Challenge (Thank you for playing) (50)</li>
+<li><a href="https://www.w3.org/community/web-bluetooth/">Web Bluetooth Community Group</a></li>
+<li><a href="https://github.com/webbluetoothcg/web-bluetooth/">WebBluetoothCG/web-bluetooth</a></li>
 </ul>
 
 
-<p>締め切りの10分後に&#8221;Reverse-Engineering Hardware 2 (500)&ldquo;の答えがわかってしまい、1日目にぐっすり寝たのを後悔。</p>
+<p>そして Web Bluetooth API の実装状況は<a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/gh-pages/implementation-status.md">こちら</a>。全体的には、やっと実装が始まってる &amp; 実装すら始まっていないという感じです。</p>
 
-<p>弊社では<a href="https://www.plugair.com">PlugAir</a>というハードウェアな認証キーを作っておりハードウェア周りが得意なので、ハードウェア系の問題 &ldquo;Reverse-Engineering Hardware 1&amp;2&rdquo; の詳細な解説をしていきます。</p>
+<h3>Chrome</h3>
 
-<p>ハードウェアのリバースエンジニアリング系の問題は、配点が高い割に回路構成さえ把握できれば悩むところがあまりない問題ばかりだったのでオススメです。</p>
+<p>Android 6 以上だと v48で GATT Notifications 以外はすべて実装されているようです。Mac OS X の Chromeだと Discovery のみ。</p>
 
-<p>コードは <a href="https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup">https://github.com/hideyuki/SECCON-2015-Online-CTF-Writeup</a> に実行可能な状態で置いています。</p>
+<p>Mac OS X Chrome はまだアクティブではないようで、Android Chrome のほうをまず実装してからとなるようです。</p>
+
+<p>ついでに、Windows, Linux はまだ実装も始まっていない状況です。</p>
+
+<h3>Firefox</h3>
+
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1204396">Bug 1204396 &ndash; [meta] Align our GATT API with W3C spec</a> にあるように、Firefox OS での実装が進んでいるようですが、歴史的経緯で W3C の Web Bluetooth API とは異なっているようです。</p>
+
+<h3>Windows Edge</h3>
+
+<p>実装ステータスは<a href="https://dev.windows.com/en-us/microsoft-edge/platform/status/webbluetooth">こちら</a>。優先度は低でまだ評価中という段階のようです。</p>
+
+<h3>ということで</h3>
+
+<p>今回は Nexus5 の Android 6 で Web Bluetooth API にトライしてみましょう。</p>
+
+<h2>Android Chrome Dev で Web Bluetooth API を使う</h2>
+
+<p>現在の <a href="https://play.google.com/store/apps/details?id=com.chrome.dev&amp;hl=ja">Android Chrome の Dev版</a> のバージョンは 49 です。</p>
+
+<p>v48 だと <code>characteristicvaluechanged</code> イベントが発火しないようなのですが、はたして v49 だとどうでしょう。</p>
+
+<p>Chrome で Web Bluetooth API を有効にするには、以下の</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>chrome://flags/#enable-web-bluetooth</span></code></pre></td></tr></table></div></figure>
+
+
+<p>BLE デバイスをお持ちでない方は、Androidアプリの <a href="https://play.google.com/store/apps/details?id=io.github.webbluetoothcg.bletestperipheral&amp;hl=ja">BLE Peripheral Simulator</a> か、iOSアプリの <a href="https://itunes.apple.com/jp/app/lightblue-explorer-bluetooth/id557428110?mt=8">LightBlue Explorer</a> をもう一台のスマホで使うことで、スマホ自体が仮想BLEデバイスとして振る舞ってくれるのでオススメです。</p>
+
+<h3>Proximity Profile</h3>
+
+<p><a href="https://developer.bluetooth.org/gatt/profiles/Pages/ProfileViewer.aspx?u=org.bluetooth.profile.proximity.xml">Bluetooth Developer Portal: GATT Specifications > Profiles > Proximity</a></p>
+
+<h4>Link Loss Service</h4>
+
+<p><a href="https://developer.bluetooth.org/gatt/services/Pages/ServiceViewer.aspx?u=org.bluetooth.service.link_loss.xml">Bluetooth Developer Portal: GATT Specifications > Services > Link Loss</a></p>
+
+<h4>Immediate Alert Service</h4>
+
+<p><a href="https://developer.bluetooth.org/gatt/services/Pages/ServiceViewer.aspx?u=org.bluetooth.service.immediate_alert.xml">Bluetooth Developer Portal: GATT Specifications > Services > Immediate Alert</a></p>
+
+<h4>Tx Power Service</h4>
+
+<p><a href="https://developer.bluetooth.org/gatt/services/Pages/ServiceViewer.aspx?u=org.bluetooth.service.tx_power.xml">Bluetooth Developer Portal: GATT Specifications > Services > Tx Power</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+    <div style="margin-bottom: 10px">
+
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/12/06/seccon-2015-online-ctf-writeup/">続きを読む &rarr;</a>
-    </footer>
+      <div>
+
+
+
+
+
+
+
+
   
 
 
-    </article>
+<time datetime="2015-12-20T20:55:51+09:00" pubdate data-updated="true">Dec 20<span>th</span>, 2015</time></div>
+      <div>
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ble/'>ble</a>
+  
+</span>
+
+</div>
+    </p>
+    
+      <div class="sharing">
+  <!-- hatebu-start -->
+  
+  <a href="http://b.hatena.ne.jp/entry/http://tech.beatrobo.com/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  
+  <!-- hatebu-end -->
+
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.beatrobo.com/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/" data-via="" data-counturl="http://tech.beatrobo.com/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/" >Tweet</a>
   
   
-    <article>
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/07/24/beatrobo-hardware-hackathon/">Beatroboハードウェアハッカソン#1 を開催しました</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-07-24T23:56:59+09:00" pubdate data-updated="true">Jul 24<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/07/24/beatrobo-hardware-hackathon/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>2014年6月14日にBeatrobo引越記念でハードウェアハッカソンを開催しました！</p>
-
-<p><a href="http://beatrobo.doorkeeper.jp/events/12214">【6/14】Beatrobo引越記念！ハードウェア・ロボットハッカソン！！【お題自由。Arduino、BLE、ロボットなんでもOK】</a></p>
-
-<p><img src="/images/201406/hackathon1/hackathon-view.jpg" width="600"></p>
-
-<p>ハードウェアハッカソンの雰囲気やみなさんの成果などを写真で報告しますっ！</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/07/24/beatrobo-hardware-hackathon/">続きを読む &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+        <a class="basic-alignment left" href="/blog/2015/12/06/seccon-2015-online-ctf-writeup/" title="Previous Post: SECCON 2015 Online CTF Writeup">&laquo; SECCON 2015 Online CTF Writeup</a>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/01/irkit-hipchat-onoff-air/">IRKitを使ってHipChatからエアコンを制御する</a></h1>
-    
-    
-      <p class="meta">
-        
+      
+    </p>
+  </footer>
+</article>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-01T01:55:46+09:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
-        
-         | <a href="/blog/2014/02/01/irkit-hipchat-onoff-air/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>どうもはじめまして。Beatrobo竹井(<a href="https://twitter.com/HideyukiTakei">@HideyukiTakei</a>)です。</p>
-
-<p>これからBeatroboエンジニアたちの技術的な話をここにまとめていこうと思います。</p>
-
-<p>第一弾はIRKitに関して！</p>
-
-<p><img src="/images/201405/irkit.jpg" width="600"></p>
-
-<p><a href="http://getirkit.com/">IRKit</a>とは、<a href="https://twitter.com/maaash">@maaash</a>さんが開発しているWiFi機能の付いたオープンソースな赤外線リモコンデバイスです。<a href="https://github.com/irkit/device">Arduinoのソースコードや基板の回路図も公開</a>されています。また、IRKitをローカルネットワークから制御するための<a href="http://getirkit.com/#IRKit-Device-API">Device HTTP API</a>や、インターネット越しに制御するための<a href="http://getirkit.com/#IRKit-Internet-API">Internet HTTP API</a>も用意されています。</p>
-
-<p>今回はこのIRKitを使って<a href="https://www.hipchat.com/%E2%80%8E">HipChat</a>からエアコンを制御する方法を順を追ってご紹介します！</p>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/02/01/irkit-hipchat-onoff-air/">続きを読む &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -395,6 +338,7 @@ Beatrobo竹井です。</p>
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -409,7 +353,10 @@ Copyright &copy; 2015 - <a href="https://corp.beatrobo.com" target="_blank">Beat
       var disqus_shortname = 'playground-beatrobo';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tech.beatrobo.com/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/';
+        var disqus_url = 'http://tech.beatrobo.com/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

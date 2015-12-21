@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ble | Playground]]></title>
+  <link href="http://tech.beatrobo.com/blog/categories/ble/atom.xml" rel="self"/>
+  <link href="http://tech.beatrobo.com/"/>
+  <updated>2015-12-21T21:01:25+09:00</updated>
+  <id>http://tech.beatrobo.com/</id>
+  <author>
+    <name><![CDATA[Beatrobo, Inc.]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Web Bluetooth API で Heart Rate Service の BLE デバイスにブラウザから接続する]]></title>
+    <link href="http://tech.beatrobo.com/blog/2015/12/20/proximity-profile-with-web-bluetooth-api/"/>
+    <updated>2015-12-20T20:55:51+09:00</updated>
+    <id>http://tech.beatrobo.com/blog/2015/12/20/proximity-profile-with-web-bluetooth-api</id>
+    <content type="html"><![CDATA[<p>こんばんは。
+Beatrobo竹井です。</p>
+
+<p>この記事は <a href="http://qiita.com/advent-calendar/2015/ble">Bluetooth Low Energy Advent Calendar 2015</a> の20日目の記事です。</p>
+
+<p>先日 <a href="http://jsbshibuya.connpass.com/event/22600/">JavaScriptでIoT !! JS Board Shibuya #6 LTナイト！</a> に行った際に <a href="https://webbluetoothcg.github.io/web-bluetooth/">Web Bluetooth API</a> の存在を知りました。</p>
+
+<p>この Web Bluetooth API を利用すれば、ブラウザだけで Web サービスと BLE デバイスとがコミュニケーションできるようになるというわけです。</p>
+
+<p>以前開発していた <a href="https://github.com/YUKAI/konashi-js-sdk">konashi-js-sdk</a> では、ブラウザ上の JS で BLE デバイスとコミュニケーションできるようにするため、BLE と通信する Native 側とブラウザ内の JS とが双方向にコミュニケーションできるカスタム WebView を作り、それを konashi.js アプリの中に埋め込んでいました。</p>
+
+<p>それが Web Bluetooth API だと、アプリのインストールはいらなくなり、普通のブラウザで konashi.js 相当のことができるようになります。</p>
+
+<p>今回は、Web Bluetooth API の現状を整理しつつ、Web Bluetooth API を使った Heart Rate Service デバイスの情報を表示するページを試しに作って見ようと思います。</p>
+
+<p>コードは <a href="https://github.com/hideyuki/heart-rate-service-with-web-bluetooth-api">https://github.com/hideyuki/heart-rate-service-with-web-bluetooth-api</a> に実行可能な状態で置いています。</p>
+
+<!-- more -->
+
+
+<h2>Web Bluetooth API の調査</h2>
+
+<p>現在、Web Bluetooth API は <a href="https://webbluetoothcg.github.io/web-bluetooth/">W3C に Draft として上がっています</a>。この Draft にはサンプルコードもたくさん記載されています。</p>
+
+<p>また、最新情報などは以下から取得できます。</p>
+
+<ul>
+<li><a href="https://www.w3.org/community/web-bluetooth/">Web Bluetooth Community Group</a></li>
+<li><a href="https://github.com/webbluetoothcg/web-bluetooth/">WebBluetoothCG/web-bluetooth</a></li>
+</ul>
+
+
+<p>そして Web Bluetooth API の実装状況は<a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/gh-pages/implementation-status.md">こちら</a>。全体的には、やっと実装が始まってる &amp; 実装すら始まっていないという感じです。</p>
+
+<h3>Chrome</h3>
+
+<p>Android 6 以上だと v48で GATT Notifications 以外はすべて実装されているようです。Mac OS X の Chromeだと Discovery のみ。</p>
+
+<p>Mac OS X Chrome はまだアクティブではないようで、Android Chrome のほうをまず実装してからとなるようです。</p>
+
+<p>ついでに、Windows, Linux はまだ実装も始まっていない状況です。</p>
+
+<h3>Firefox</h3>
+
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1204396">Bug 1204396 &ndash; [meta] Align our GATT API with W3C spec</a> にあるように、Firefox OS での実装が進んでいるようですが、歴史的経緯で W3C の Web Bluetooth API とは異なっているようです。</p>
+
+<h3>Windows Edge</h3>
+
+<p>実装ステータスは<a href="https://dev.windows.com/en-us/microsoft-edge/platform/status/webbluetooth">こちら</a>。優先度は低でまだ評価中という段階のようです。</p>
+
+<h3>ということで</h3>
+
+<p>今回は Nexus5 の Android 6 で Web Bluetooth API にトライしてみましょう。</p>
+
+<h2>Android Chrome Dev で Web Bluetooth API を使う</h2>
+
+<p>現在の <a href="https://play.google.com/store/apps/details?id=com.chrome.dev&amp;hl=ja">Android Chrome の Dev版</a> のバージョンは 49 です。</p>
+
+<p>v48 だと <code>characteristicvaluechanged</code> イベントが発火しないようなのですが、はたして v49 だとどうでしょう。</p>
+
+<p>Chrome で Web Bluetooth API を有効にするには、以下の</p>
+
+<p><code>
+chrome://flags/#enable-web-bluetooth
+</code></p>
+
+<p>BLE デバイスをお持ちでない方は、Androidアプリの <a href="https://play.google.com/store/apps/details?id=io.github.webbluetoothcg.bletestperipheral&amp;hl=ja">BLE Peripheral Simulator</a> か、iOSアプリの <a href="https://itunes.apple.com/jp/app/lightblue-explorer-bluetooth/id557428110?mt=8">LightBlue Explorer</a> をもう一台のスマホで使うことで、スマホ自体が仮想BLEデバイスとして振る舞ってくれるのでオススメです。</p>
+
+<h3>Proximity Profile</h3>
+
+<p><a href="https://developer.bluetooth.org/gatt/profiles/Pages/ProfileViewer.aspx?u=org.bluetooth.profile.proximity.xml">Bluetooth Developer Portal: GATT Specifications > Profiles > Proximity</a></p>
+
+<h4>Link Loss Service</h4>
+
+<p><a href="https://developer.bluetooth.org/gatt/services/Pages/ServiceViewer.aspx?u=org.bluetooth.service.link_loss.xml">Bluetooth Developer Portal: GATT Specifications > Services > Link Loss</a></p>
+
+<h4>Immediate Alert Service</h4>
+
+<p><a href="https://developer.bluetooth.org/gatt/services/Pages/ServiceViewer.aspx?u=org.bluetooth.service.immediate_alert.xml">Bluetooth Developer Portal: GATT Specifications > Services > Immediate Alert</a></p>
+
+<h4>Tx Power Service</h4>
+
+<p><a href="https://developer.bluetooth.org/gatt/services/Pages/ServiceViewer.aspx?u=org.bluetooth.service.tx_power.xml">Bluetooth Developer Portal: GATT Specifications > Services > Tx Power</a></p>
+]]></content>
+  </entry>
+  
+</feed>
