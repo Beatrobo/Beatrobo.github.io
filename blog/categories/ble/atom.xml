@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ble | Playground]]></title>
   <link href="http://tech.beatrobo.com/blog/categories/ble/atom.xml" rel="self"/>
   <link href="http://tech.beatrobo.com/"/>
-  <updated>2015-12-22T03:23:33+09:00</updated>
+  <updated>2015-12-22T03:30:57+09:00</updated>
   <id>http://tech.beatrobo.com/</id>
   <author>
     <name><![CDATA[Beatrobo, Inc.]]></name>
@@ -123,8 +123,6 @@ chrome://flags/#enable-web-bluetooth
 <p><a href="https://developer.bluetooth.org/gatt/services/Pages/ServiceViewer.aspx?u=org.bluetooth.service.tx_power.xml">Bluetooth Developer Portal: GATT Specifications > Services > Tx Power</a></p>
 
 <p>BLE の送信パワーを読める Service です。Read のみ可能な <code>tx_power_level</code> という Characteristic を持っています。</p>
-
-<p>あとはセントラル側のコードをかけば通信できそうです。</p>
 
 <h2>ブラウザ(BLEのセントラル)側のコード例</h2>
 
@@ -249,7 +247,7 @@ console.log(error);
 
 <h2>BLE 好きな方、遊びにおいで！</h2>
 
-<p><a href="http://tech.beatrobo.com/jobs">アルバイトや正社員のエンジニア募集中です！</a></p>
+<p><a href="https://www.plugair.com/en/jobs/">アルバイトや正社員のエンジニア募集中です！</a></p>
 
 <p>BLEが好きな方、ハードが好きな方。ぜひ弊社の代々木オフィスに遊びに来て語り合いましょう！</p>
 
